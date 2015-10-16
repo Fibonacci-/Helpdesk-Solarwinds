@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Helpdesk</string>
+    <string name="loading">Loading...</string>
+    <string name="server_name">Server name</string>
+    <string name="get_server_name">Enter the name of your WHD server:</string>
+    <string name="server_hint">helpdesk.company.com</string>
+    <string name="api_key">API Key</string>
+    <string name="get_api_key">Enter your API key:</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="err_fields_not_full">All fields must not be empty</string>
+    <string name="init_assure">We never store your password.</string>
+    <string name="tickets_title">Tickets</string>
+    <string name="session_check">Checking session...</string>
+    <string name="new_note">New note</string>
+    <string name="no_notes">No notes</string>
+    <string name="is_visible">Visible to client?</string>
+    <string name="note_hint">Note details</string>
+    <string name="min_worked">Minutes worked</string>
+    <string name="email_c">Email:</string>
+    <string name="tech">Tech</string>
+    <string name="client">Client</string>
+</resources>
