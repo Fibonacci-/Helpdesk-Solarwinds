@@ -30,9 +30,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-/**
- * Created by helwig on 10/15/2015.
- */
+
 public class TicketViewFragment extends Fragment implements RNInterface {
 
     protected static final int TASK_FULL_TICKET = 100;
@@ -207,23 +205,9 @@ public class TicketViewFragment extends Fragment implements RNInterface {
 
                     ListView listView = new ListView(getActivity());
                     NoteArrayAdapter adapter = new NoteArrayAdapter(mTicket.getNotes());
-                    int totalHeight = 0;
 
-                    for (int i = 0; i < adapter.getCount(); i++) {
-                        View mView = adapter.getView(i, null, listView);
 
-                        mView.measure(
-                                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-
-                                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-
-                        totalHeight += mView.getMeasuredHeight();
-                        //Log.w("HEIGHT" + i, String.valueOf(totalHeight));
-
-                    }
-
-                    listView.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, totalHeight
-                            + (listView.getDividerHeight() * (adapter.getCount() - 1))));
+                    listView.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1500));//magic number is a dirty hack
                     listView.setDividerHeight(0);
                     listView.setAdapter(adapter);
                     llNotes.addView(listView);
@@ -312,7 +296,9 @@ public class TicketViewFragment extends Fragment implements RNInterface {
             TicketNote note = getItem(position);
 
             TextView tvNoteText = (TextView) convertView.findViewById(R.id.tv_note_text);
-            tvNoteText.setText(note.getNoteText());
+            TextView tvNotePrettyUpdated = (TextView) convertView.findViewById(R.id.tv_note_pretty_updated);
+            tvNoteText.setText(Html.fromHtml(note.getNoteText()));
+            tvNotePrettyUpdated.setText(Html.fromHtml(note.getPrettyUpdated()));
 
             return convertView;
         }
