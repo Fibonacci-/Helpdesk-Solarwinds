@@ -14,7 +14,7 @@
         android:layout_marginRight="5dp"
         android:layout_marginBottom="3dp"
         android:layout_marginTop="3dp"
-        card_view:cardCornerRadius="1dp"
+        card_view:cardCornerRadius="5dp"
         card_view:contentPadding="5dp">
 
         <RelativeLayout
@@ -29,6 +29,7 @@
                 android:layout_alignParentStart="true"
                 android:text="12345"
                 android:textSize="35sp"
+                android:paddingBottom="10dp"
                 />
 
             <TextView
@@ -49,15 +50,15 @@
                 android:text="3 hours ago"
                 android:layout_above="@+id/v_line"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:paddingBottom="10dp"/>
 
             <View
                 android:id="@+id/v_line"
                 android:layout_width="fill_parent"
-                android:layout_height="1dp"
+                android:layout_height="3dp"
                 android:layout_alignBottom="@id/tv_tick_id"
-                android:background="#FBA400"
-                android:padding="15dp"/>
+                android:background="#FBA400"/>
 
             <TextView
                 android:id="@+id/tv_tick_subj"
@@ -67,6 +68,7 @@
                 android:text="Subject line"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:paddingTop="20dp"
                 />
 
             <TextView
@@ -76,6 +78,8 @@
                 android:layout_below="@id/tv_tick_subj"
                 android:text="The quick brown fox jumped over the lazy dog"
                 android:textSize="15sp"
+                android:paddingTop="15dp"
+                android:paddingBottom="10dp"
                 android:textStyle="italic"
                 />
 

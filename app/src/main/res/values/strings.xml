@@ -21,4 +21,11 @@
     <string name="email_c">Email:</string>
     <string name="tech">Tech</string>
     <string name="client">Client</string>
+    <string name="search">Search</string>
+    <string name="settings">Settings</string>
+    <string-array
+        name="drawer_titles">
+        <item>Tickets</item>
+        <item>Search</item>
+    </string-array>
 </resources>

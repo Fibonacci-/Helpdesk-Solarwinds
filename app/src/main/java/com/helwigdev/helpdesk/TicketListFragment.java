@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,7 +137,7 @@ public class TicketListFragment extends ListFragment implements RNInterface {
 
     @Override
     public void setCookie(String cookie) {
-        //do nothing
+        //do nothing - not used here
     }
 
     private class TicketAdapter extends ArrayAdapter<Ticket> {
@@ -165,7 +166,7 @@ public class TicketListFragment extends ListFragment implements RNInterface {
             tvClient.setText(t.getDisplayClient());
             tvUpdated.setText(t.getPrettyLastUpdated());
             tvSubj.setText(t.getShortSubject());
-            tvDetail.setText(t.getShortDetail());
+            tvDetail.setText(Html.fromHtml(t.getShortDetail()));//detail may include html markup
 
 
             return convertView;
