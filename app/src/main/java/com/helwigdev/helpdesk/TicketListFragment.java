@@ -14,6 +14,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +48,8 @@ public class TicketListFragment extends ListFragment implements RNInterface {
         super.onAttach(context);
         mCallbacks = (Callbacks) context;
     }
+
+
 
     @Override
     public void onDetach() {

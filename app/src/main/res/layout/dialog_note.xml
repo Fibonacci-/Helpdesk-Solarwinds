@@ -37,6 +37,7 @@
         android:layout_toStartOf="@+id/cb_is_visible"
         android:ems="10"
         android:hint="@string/min_worked"
+        android:text="0"
         android:inputType="number"/>
 
     <View

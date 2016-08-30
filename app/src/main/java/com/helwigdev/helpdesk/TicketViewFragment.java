@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -17,8 +18,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,8 +48,11 @@ public class TicketViewFragment extends Fragment implements RNInterface {
     Button bNewNote;
     ProgressBar pbNoteLoader;
     LinearLayout llNotes;
+    ScrollView svTicketScroll;
     SharedPreferences preferences;
     RNInterface netInterface = this;
+    ListView listView;
+    RelativeLayout rlTicketRelative;
 
     @Nullable
     @Override
@@ -72,7 +79,8 @@ public class TicketViewFragment extends Fragment implements RNInterface {
         bNewNote = (Button) v.findViewById(R.id.b_full_new_note);
         pbNoteLoader = (ProgressBar) v.findViewById(R.id.pb_full_note_loader);
         llNotes = (LinearLayout) v.findViewById(R.id.ll_full_notes);
-
+        svTicketScroll = (ScrollView) v.findViewById(R.id.sv_ticket_scrollview);
+        rlTicketRelative = (RelativeLayout) v.findViewById(R.id.rl_ticket_relative);
 
         bNewNote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +101,8 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                                 cbVisible = (CheckBox) vDia.findViewById(R.id.cb_is_visible);
                                 cbEmailTech = (CheckBox) vDia.findViewById(R.id.cb_dia_email_tech);
                                 cbEmailClient = (CheckBox) vDia.findViewById(R.id.cb_dia_email_client);
+
+
 
                                 if (etDetails.getText().toString().equals("") ||
                                         etTime.getText().toString().equals("")) {
@@ -203,14 +213,50 @@ public class TicketViewFragment extends Fragment implements RNInterface {
 
                     //add notes
 
-                    ListView listView = new ListView(getActivity());
+                    try{
+                        llNotes.removeView(listView);
+
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                    listView = new ListView(getActivity());
+                    listView.setOnTouchListener(new ListView.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            int action = event.getAction();
+                            switch (action) {
+                                case MotionEvent.ACTION_DOWN:
+                                    // Disallow ScrollView to intercept touch events.
+                                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                                    break;
+
+                                case MotionEvent.ACTION_UP:
+
+                                    // Allow ScrollView to intercept touch events.
+
+                                    v.getParent().requestDisallowInterceptTouchEvent(false);
+
+                                    break;
+                            }
+
+                            // Handle ListView touch events.
+                            v.onTouchEvent(event);
+                            return true;
+                        }
+                    });
+
                     NoteArrayAdapter adapter = new NoteArrayAdapter(mTicket.getNotes());
 
-
-                    listView.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1500));//magic number is a dirty hack
+                    //this expands the list view by a magic number so the note isn't hidden behind the ticket (wtf)
+                    //listView.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1500));//magic number is a dirty hack
                     listView.setDividerHeight(0);
                     listView.setAdapter(adapter);
+
+
                     llNotes.addView(listView);
+
 
                     if (mTicket.getNotes().size() == 0) {
                         LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -220,6 +266,13 @@ public class TicketViewFragment extends Fragment implements RNInterface {
 
                     }
                     pbNoteLoader.setVisibility(View.GONE);
+
+                    //refresh layout sizes
+                    setListViewHeightBasedOnChildren(listView);
+
+                    llNotes.requestLayout();
+                    rlTicketRelative.requestLayout();
+                    svTicketScroll.requestLayout();
 
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
@@ -235,6 +288,26 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                 getTicketDetails();
                 break;
         }
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 
     @Override
@@ -279,6 +352,12 @@ public class TicketViewFragment extends Fragment implements RNInterface {
     @Override
     public void setCookie(String cookie) {
         //ignore
+    }
+
+    @Override
+    public void onPause() {
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        super.onPause();
     }
 
     private class NoteArrayAdapter extends ArrayAdapter<TicketNote> {

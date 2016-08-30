@@ -1,10 +1,12 @@
 package com.helwigdev.helpdesk;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -14,6 +16,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +35,7 @@ public class Init extends AppCompatActivity implements RNInterface {
     public static final String PREF_TECH_ID = "whd_tech_id";
     public static final String PREF_INSTANCE_ID = "whd_instance_id";
     public static final String PREF_COOKIE = "whd_cookie";
+    public static final String PREF_DISCLAIMER = "seen_disclaimer";
 
     private static final String TAG = "Init";
 
@@ -41,9 +48,57 @@ public class Init extends AppCompatActivity implements RNInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_init);
 
-        //TODO show boilerplate disclaimer
+
+
+        /*
+        TODO
+        implement searching
+        add progress indicator while logging in
+        put ads in
+        put ad removal charge in
+         */
+
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-5637328886369714~1187638383");
+
+        AdView mAdView = (AdView) findViewById(R.id.av_init_bottom);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+
+        mAdView.loadAd(adRequest);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        //show disclaimer
+        if(!preferences.contains(PREF_DISCLAIMER)){
+            //show disclaimer
+
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            //Yes button clicked
+                            //write preference
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString(PREF_DISCLAIMER, "seen");
+                            editor.apply();
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            Toast.makeText(getApplicationContext(),"You have to read and agree.",Toast.LENGTH_LONG).show();
+                            finish();
+
+                            break;
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(getResources().getString(R.string.disclaimer)).setPositiveButton("I read the whole paragraph", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+        }
+
         pd = new ProgressDialog(this);
 
         final EditText etServer = (EditText) findViewById(R.id.et_init_server);
@@ -61,6 +116,7 @@ public class Init extends AppCompatActivity implements RNInterface {
         etPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                //set done keyboard action
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     bLogin.performClick();
                 }

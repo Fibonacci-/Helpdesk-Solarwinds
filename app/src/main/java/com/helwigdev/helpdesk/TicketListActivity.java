@@ -14,16 +14,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 /**
  * Created by helwig on 10/14/2015.
  */
 public class TicketListActivity extends SingleFragmentActivity implements TicketListFragment.Callbacks{
-    @Override
+    //disable menu until settings || search are finished
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_ticketlist, menu);
         return true;
-    }
+    }*/
 
     @Override
     protected Fragment createFragment() {
@@ -31,14 +36,29 @@ public class TicketListActivity extends SingleFragmentActivity implements Ticket
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-5637328886369714~1187638383");
+
+        AdView mAdView = (AdView) findViewById(R.id.av_tickets_bottom);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+
+        mAdView.loadAd(adRequest);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_search:
                 //todo search things
-                Toast.makeText(TicketListActivity.this, "Searching for something la de da", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TicketListActivity.this, "Not yet implemented", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.menu_settings:
                 //todo settings things
+                startActivity(new Intent(this,SettingsActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -48,7 +68,7 @@ public class TicketListActivity extends SingleFragmentActivity implements Ticket
 
     @Override
     protected int getLayoutResId() {
-        return super.getLayoutResId();
+        return R.layout.ticket_list_activity;
 
     }
 

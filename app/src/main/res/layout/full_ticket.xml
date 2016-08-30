@@ -2,12 +2,15 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sv_ticket_scrollview"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/rl_ticket_relative">
 
         <android.support.v7.widget.CardView
             android:id="@+id/cv_full_static"
@@ -139,8 +142,13 @@
                 android:id="@+id/b_full_new_note"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+
                 android:text="@string/new_note"
                 />
+
+            <Space
+                android:layout_width="1dp"
+                android:layout_height="30dp"/>
 
             <ProgressBar
                 android:id="@+id/pb_full_note_loader"
