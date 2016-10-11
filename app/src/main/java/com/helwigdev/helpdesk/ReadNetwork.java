@@ -62,9 +62,10 @@ public class ReadNetwork extends AsyncTask<URL, Void, String> {
                     String cookies = urlConnection.getHeaderField("Set-Cookie");
 
                     // open the new connnection again
-                    urlConnection = (HttpURLConnection) new URL(newUrl).openConnection();
 
-                    urlConnection.setRequestProperty("Cookie", cookies);
+                    urlConnection = (HttpURLConnection) new URL(newUrl).openConnection();
+                    //urlConnection.setRequestProperty("Cookie", cookies);
+
 
 
                 }
