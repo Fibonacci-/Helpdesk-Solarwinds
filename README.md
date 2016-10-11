@@ -8,7 +8,11 @@ Solarwinds does not provide an app for their ticketing system, and their mobile 
 
 ## Installation
 
-When the app is complete, you will be able to download it via Google Play. In the meantime, you can clone this repository via IntelliJ and build an APK manually. 
+You can install the app on Google Play at this link: 
+
+https://play.google.com/store/apps/details?id=com.helwigdev.helpdesk
+
+Otherwise, you can always clone this repository via IntelliJ and build an APK manually. 
 
 ## Contributing
 
