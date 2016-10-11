@@ -167,7 +167,9 @@ public class Init extends AppCompatActivity implements RNInterface {
 
             try {
                 String cookie = preferences.getString(Init.PREF_COOKIE, "");
-                new ReadNetwork(1, this, true, cookie).execute(new URL(sUrl));
+                if(cookie != "") {
+                    new ReadNetwork(1, this, true, cookie).execute(new URL(sUrl));
+                }
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -272,5 +274,6 @@ public class Init extends AppCompatActivity implements RNInterface {
     @Override
     public void setCookie(String cookie) {
         preferences.edit().putString(PREF_COOKIE, cookie).apply();
+        Log.d(TAG, "Set cookie!");
     }
 }

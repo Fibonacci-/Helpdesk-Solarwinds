@@ -23,12 +23,12 @@ import com.google.android.gms.ads.MobileAds;
  */
 public class TicketListActivity extends SingleFragmentActivity implements TicketListFragment.Callbacks{
     //disable menu until settings || search are finished
-    /*@Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_ticketlist, menu);
         return true;
-    }*/
+    }
 
     @Override
     protected Fragment createFragment() {
@@ -52,14 +52,17 @@ public class TicketListActivity extends SingleFragmentActivity implements Ticket
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.menu_search:
-                //todo search things
-                Toast.makeText(TicketListActivity.this, "Not yet implemented", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.menu_settings:
-                //todo settings things
-                startActivity(new Intent(this,SettingsActivity.class));
-                return true;
+//            case R.id.menu_search:
+//                //todo search things
+//                Toast.makeText(TicketListActivity.this, "Not yet implemented", Toast.LENGTH_SHORT).show();
+//                return true;
+//            case R.id.menu_settings:
+//                //todo settings things
+//                startActivity(new Intent(this,SettingsActivity.class));
+//                return true;
+            case R.id.menu_legal:
+                //start attribution activity
+                startActivity(new Intent(this, AttributionActivity.class));
             default:
                 return super.onOptionsItemSelected(item);
         }

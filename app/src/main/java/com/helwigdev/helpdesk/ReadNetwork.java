@@ -12,6 +12,12 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.List;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.internal.framed.Header;
 
 /**
  * Created by helwig on 10/13/2015.
@@ -39,68 +45,41 @@ public class ReadNetwork extends AsyncTask<URL, Void, String> {
     protected String doInBackground(URL... params) {
 
         for (URL url : params) {
-            HttpURLConnection urlConnection = null;
+
             try {
-                urlConnection = (HttpURLConnection) url.openConnection();
 
-                //check for redirects - handles http -> https headers
-                Boolean redirect = false;
-                int status = urlConnection.getResponseCode();
-                if (status != HttpURLConnection.HTTP_OK) {
-                    if (status == HttpURLConnection.HTTP_MOVED_TEMP
-                            || status == HttpURLConnection.HTTP_MOVED_PERM
-                            || status == HttpURLConnection.HTTP_SEE_OTHER)
-                        redirect = true;
-                }
-
-                Log.d(TAG, "Response Code ... " + status);
-
-                if (redirect) {
-                    // get redirect url from "location" header field
-                    String newUrl = urlConnection.getHeaderField("Location");
-                    // get the cookie if need, for login
-                    String cookies = urlConnection.getHeaderField("Set-Cookie");
-
-                    // open the new connnection again
-
-                    urlConnection = (HttpURLConnection) new URL(newUrl).openConnection();
-                    //urlConnection.setRequestProperty("Cookie", cookies);
-
-
-
-                }
+                OkHttpClient client = new OkHttpClient();
+                client.followSslRedirects();
+                Request request;
+                Log.d("OKHTTP",url.toString());
                 if(useCookie){
-                    urlConnection.setRequestProperty("Cookie", customCookie);
+                    Log.d("OKHTTP","Using cookie!");
+                    request = new Request.Builder()
+                            .url(url)
+                            .get()
+                            .addHeader("Cookie", customCookie + "")
+                            .build();
+                } else {
+                    request = new Request.Builder()
+                            .url(url)
+                            .get()
+                            .build();
                 }
-                urlConnection.connect();
-                errType = urlConnection.getResponseCode();
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                cookie = urlConnection.getHeaderField("Set-Cookie");
-                Log.d(TAG, urlConnection.getResponseCode() + "");
 
-                int bytesRead;
-                byte[] buffer = new byte[1024];
-                while ((bytesRead = in.read(buffer)) > 0) {
-                    out.write(buffer, 0, bytesRead);//read data stream
+                //get cookie - because the REST api also requires a consistent cookie
+                //this feature is undocumented.
+                Response response = client.newCall(request).execute();
+                String body = response.body().string();
+                List<String> headerList = response.headers("Set-Cookie");
+                for(String header : headerList) {
+                    cookie = header;
                 }
-                out.close();
-                errType = urlConnection.getResponseCode();
-
-                return out.toString();
-            } catch (FileNotFoundException e) {
-                //e.printStackTrace();
-            }  catch (UnknownHostException e){
-                return "{\"type\":\"Error\", \"message\":\"Can't find server\"}";
+                Log.d("OKHTTP",body);
+                return body;
             }catch (IOException e) {
                 e.printStackTrace();
             }
 
-            finally {
-                assert urlConnection != null;
-                urlConnection.disconnect();
-
-            }
         }
         return "error";
     }
