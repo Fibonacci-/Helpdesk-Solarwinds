@@ -222,7 +222,7 @@ public class Init extends AppCompatActivity implements RNInterface {
 
                     pd.dismiss();
 
-                    Intent i = new Intent(this, TicketListActivity.class);
+                    Intent i = new Intent(this, TabActivity.class);
                     startActivity(i);
                     finish();
 
@@ -244,7 +244,7 @@ public class Init extends AppCompatActivity implements RNInterface {
             Log.d(TAG, output);
             pd.dismiss();
 
-            Intent i = new Intent(this, TicketListActivity.class);
+            Intent i = new Intent(this, TabActivity.class);
             startActivity(i);
             finish();
         }

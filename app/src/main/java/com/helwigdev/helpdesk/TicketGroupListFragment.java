@@ -1,6 +1,5 @@
 package com.helwigdev.helpdesk;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,9 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONArray;
@@ -32,7 +28,7 @@ import java.util.ArrayList;
  * Created by helwig on 10/14/2015.
  */
 
-public class TicketListFragment extends ListFragment implements RNInterface {
+public class TicketGroupListFragment extends ListFragment implements RNInterface {
 
     private static final String TAG = "TicketListFragment";
 
@@ -60,7 +56,7 @@ public class TicketListFragment extends ListFragment implements RNInterface {
 
         String sUrl = "http://" +
                 preferences.getString(Init.PREF_SERVER, "") +
-                "/helpdesk/WebObjects/Helpdesk.woa/ra/Tickets/mine" +
+                "/helpdesk/WebObjects/Helpdesk.woa/ra/Tickets/group" +
                 "?page=1&limit=500" +
                 "&sessionKey=" +
                 preferences.getString(Init.PREF_SESSION_KEY, "");
@@ -97,14 +93,14 @@ public class TicketListFragment extends ListFragment implements RNInterface {
                     JSONArray array = new JSONArray(output);
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject o = array.getJSONObject(i);
-                        TicketSingleton.getInstance().addTicket(new Ticket(o, Ticket.TYPE_SHORT));
+                        TicketGroupSingleton.getInstance().addTicket(new Ticket(o, Ticket.TYPE_SHORT));
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                     FirebaseCrash.report(new Exception("JSONException: TicketListFragment: " + e.toString()));
                 }
-                TicketAdapter adapter = new TicketAdapter(TicketSingleton.getInstance().getTickets());
+                TicketAdapter adapter = new TicketAdapter(TicketGroupSingleton.getInstance().getTickets());
                 setListAdapter(adapter);
                 break;
             default:

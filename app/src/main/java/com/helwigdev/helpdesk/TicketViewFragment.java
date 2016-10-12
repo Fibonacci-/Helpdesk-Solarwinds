@@ -26,6 +26,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,18 +54,19 @@ public class TicketViewFragment extends Fragment implements RNInterface {
     RNInterface netInterface = this;
     ListView listView;
     RelativeLayout rlTicketRelative;
+    int ticketId;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        int ticketId = getActivity().getIntent().getIntExtra(Ticket.KEY_TICKET_ID, -1);
+        ticketId = getActivity().getIntent().getIntExtra(Ticket.KEY_TICKET_ID, -1);
         if (ticketId == -1) {
             Toast.makeText(getActivity(), "Internal error", Toast.LENGTH_SHORT).show();
             getActivity().finish();
         }
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mTicket = TicketSingleton.getInstance().getTicketById(ticketId);
+        //mTicket = TicketSingleton.getInstance().getTicketById(ticketId);
 
         View v = inflater.inflate(R.layout.full_ticket, container, false);
 
@@ -145,15 +147,16 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                         .create().show();
             }
         });
+
         pbNoteLoader.setVisibility(View.VISIBLE);
 
         //find and insert ticket details from cached views
-        tvId.setText(String.valueOf(mTicket.getTicketId()));
-        tvClient.setText("Client: " + mTicket.getDisplayClient());
-        tvPrettyUpdated.setText(mTicket.getPrettyLastUpdated());
-        tvUpdated.setText(mTicket.getLastUpdated().toString());
-        tvSubject.setText(mTicket.getShortSubject());
-        tvDetails.setText(mTicket.getShortDetail());
+//        tvId.setText(String.valueOf(mTicket.getTicketId()));
+//        tvClient.setText("Client: " + mTicket.getDisplayClient());
+//        tvPrettyUpdated.setText(mTicket.getPrettyLastUpdated());
+//        tvUpdated.setText(mTicket.getLastUpdated().toString());
+//        tvSubject.setText(mTicket.getShortSubject());
+//        tvDetails.setText(mTicket.getShortDetail());
 
         tvSubject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,7 +186,7 @@ public class TicketViewFragment extends Fragment implements RNInterface {
         String sUrl = "http://" +
                 preferences.getString(Init.PREF_SERVER, "") +
                 "/helpdesk/WebObjects/Helpdesk.woa/ra/Tickets/" +
-                String.valueOf(mTicket.getTicketId()) +
+                ticketId +
                 "?sessionKey=" +
                 preferences.getString(Init.PREF_SESSION_KEY, "");
 
@@ -203,13 +206,13 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                 //expect json object
                 try {
                     JSONObject o = new JSONObject(output);
-                    mTicket.updateTicketLong(o);
+                    //mTicket.updateTicketLong(o);
                     //need: created by, full subj, full detail, notes
                     tvCreatedBy.setVisibility(View.VISIBLE);
-                    String s = "Created by: " + mTicket.getCreatedBy();
+                    String s = "Created by: " + o.getJSONObject("clientReporter").getString("email");
                     tvCreatedBy.setText(s);
-                    tvSubject.setText(mTicket.getLongSubject());
-                    tvDetails.setText(Html.fromHtml(mTicket.getLongDetail()));
+                    tvSubject.setText(o.getString("subject"));
+                    tvDetails.setText(Html.fromHtml(o.getString("detail")));
 
                     //add notes
 
@@ -247,7 +250,13 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                         }
                     });
 
-                    NoteArrayAdapter adapter = new NoteArrayAdapter(mTicket.getNotes());
+                    ArrayList<TicketNote> notes = new ArrayList<>();
+                    JSONArray jsonNotes = o.getJSONArray("notes");
+                    for(int i = 0; i < jsonNotes.length(); i++){
+                        notes.add(new TicketNote(jsonNotes.getJSONObject(i), Ticket.TYPE_LONG));
+                    }
+
+                    NoteArrayAdapter adapter = new NoteArrayAdapter(notes);
 
                     //this expands the list view by a magic number so the note isn't hidden behind the ticket (wtf)
                     //listView.setLayoutParams(new ListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1500));//magic number is a dirty hack
@@ -258,7 +267,7 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                     llNotes.addView(listView);
 
 
-                    if (mTicket.getNotes().size() == 0) {
+                    if (notes.size() == 0) {
                         LayoutInflater inflater = LayoutInflater.from(getActivity());
                         View v = inflater.inflate(R.layout.part_note, llNotes, true);
                         TextView tvNote = (TextView) v.findViewById(R.id.tv_note_text);
@@ -274,7 +283,7 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                     rlTicketRelative.requestLayout();
                     svTicketScroll.requestLayout();
 
-                } catch (JSONException | ParseException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 break;

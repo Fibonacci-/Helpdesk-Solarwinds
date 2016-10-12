@@ -17,17 +17,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TicketListActivity" />
         <activity android:name=".TicketViewActivity" />
         <activity android:name=".AttributionActivity" />
+        <activity android:name=".DrawerHostActivity" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".TicketListActivity">
+            android:parentActivityName=".TabActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.helwigdev.helpdesk.TicketListActivity" />
+                android:value="com.helwigdev.helpdesk.TabActivity" />
         </activity>
+        <activity
+            android:name=".TabActivity"
+            android:label="@string/title_activity_tab"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

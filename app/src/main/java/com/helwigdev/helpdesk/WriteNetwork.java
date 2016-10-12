@@ -14,6 +14,13 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by helwig on 10/16/2015.
@@ -25,7 +32,7 @@ public class WriteNetwork extends AsyncTask<URL, Void, String>{
     private final RNInterface rn;
     private final boolean useCookie;
     private final String customCookie;
-    int errType = 0;
+    int errType = 200;
     private final String data;
     String cookie = null;
 
@@ -58,6 +65,7 @@ public class WriteNetwork extends AsyncTask<URL, Void, String>{
 
                 if (redirect) {
                     // get redirect url from "location" header field
+
                     String newUrl = urlConnection.getHeaderField("Location");
                     // get the cookie if need, for login
                     String cookies = urlConnection.getHeaderField("Set-Cookie");
@@ -65,7 +73,7 @@ public class WriteNetwork extends AsyncTask<URL, Void, String>{
                     // open the new connnection again
                     urlConnection = (HttpURLConnection) new URL(newUrl).openConnection();
 
-                    urlConnection.setRequestProperty("Cookie", cookies);
+                    //urlConnection.setRequestProperty("Cookie", cookies);
 
 
                 }
@@ -101,21 +109,51 @@ public class WriteNetwork extends AsyncTask<URL, Void, String>{
                 }
                 out.close();
                 errType = urlConnection.getResponseCode();
-
                 return out.toString();
-            } catch (FileNotFoundException e) {
-                //e.printStackTrace();
-            }  catch (UnknownHostException e){
-                return "{\"type\":\"Error\", \"message\":\"Can't find server\"}";
+
+
+                //OKHTTP start
+//                final MediaType JSON
+//                        = MediaType.parse("application/octet-stream");
+//                Log.d(TAG, data);
+//                Log.d(TAG, url.toString());
+//                OkHttpClient client = new OkHttpClient();
+//                //make request
+//                RequestBody body = RequestBody.create(JSON, data);
+//                Request request;
+//                if(useCookie){
+//                    request = new Request.Builder()
+//                            .url(url)
+//                            .post(body)
+//                            .addHeader("Cookie", customCookie + "")
+//                            .build();
+//                } else {
+//                    request = new Request.Builder()
+//                            .url(url)
+//                            .post(body)
+//                            .build();
+//                }
+//
+//
+//                //post
+//                Response response = client.newCall(request).execute();
+//
+//                //get response code & cookie
+//                String responseBody = response.body().string();
+//                List<String> headerList = response.headers("Set-Cookie");
+//                for(String header : headerList) {
+//                    cookie = header;
+//                }
+//                Log.d("OKHTTP",responseBody);
+//
+//                errType = response.code();
+//
+//                return responseBody;
+
             }catch (IOException e) {
                 e.printStackTrace();
             }
 
-            finally {
-                assert urlConnection != null;
-                urlConnection.disconnect();
-
-            }
         }
         return "error";
     }
@@ -124,7 +162,7 @@ public class WriteNetwork extends AsyncTask<URL, Void, String>{
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         if(cookie != null) rn.setCookie(cookie);
-        if(s.equals("error")){
+        if(s.equals("error") || s.equals("Authentication Required.")){
             rn.authErr(errType, taskID);
         } else {
             rn.processResult(s, taskID);
