@@ -67,7 +67,7 @@ public class Init extends AppCompatActivity implements RNInterface {
                 .build();
 
         mAdView.loadAd(adRequest);
-
+        //FirebaseCrash.report(new Exception("Testing crash reporting"));
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         //show disclaimer

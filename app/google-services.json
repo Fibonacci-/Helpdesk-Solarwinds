@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1072738729262",
+    "firebase_url": "https://admob-app-id-1187638383.firebaseio.com",
+    "project_id": "admob-app-id-1187638383",
+    "storage_bucket": "admob-app-id-1187638383.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1072738729262:android:b0d7030906ef5ab8",
+        "android_client_info": {
+          "package_name": "com.helwigdev.helpdesk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1072738729262-q66dm1s8pdrfqn5jeami0gdhepocm4nj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABQTP0W86iM09XiM8SDFQEjatadgDvp_o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
