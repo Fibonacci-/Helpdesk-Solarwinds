@@ -3,6 +3,7 @@ package com.helwigdev.helpdesk;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -38,7 +39,7 @@ public class ReadNetwork extends AsyncTask<URL, Void, String> {
 
     int taskID;
     RNInterface rn;
-    int errType = 0;
+    int errType = 200;
     String cookie = null;
 
     @Override
@@ -75,6 +76,8 @@ public class ReadNetwork extends AsyncTask<URL, Void, String> {
                     cookie = header;
                 }
                 Log.d("OKHTTP",body);
+
+                errType = response.code();
                 return body;
             }catch (IOException e) {
                 e.printStackTrace();
@@ -88,9 +91,12 @@ public class ReadNetwork extends AsyncTask<URL, Void, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         if(cookie != null) rn.setCookie(cookie);
-        if(s.equals("error")){
+        if(s.equals("error") || s.equals("Authentication Required.")){
             rn.authErr(errType, taskID);
-        } else {
+        } else if(errType < 200 || errType >= 300){
+            rn.authErr(errType, taskID);
+        }
+        else {
             rn.processResult(s, taskID);
         }
     }

@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -202,6 +203,7 @@ public class Init extends AppCompatActivity implements RNInterface {
 
             Log.d(TAG, "Recv net request");
             Log.d(TAG, output);
+            //Toast.makeText(this,"Task ID: " + taskID + " : " + output,Toast.LENGTH_LONG).show();
             try {
                 JSONObject o = new JSONObject(output);
                 if (o.getString("type").equals("Session")) {
@@ -228,14 +230,17 @@ public class Init extends AppCompatActivity implements RNInterface {
                     String message = o.getString("message");
                     pd.dismiss();
                     Toast.makeText(this, "Error: server returned message: " + message, Toast.LENGTH_LONG).show();
+                    FirebaseCrash.report(new Exception("Init: Received error from server:" + message));
                 }
             } catch (JSONException e) {
                 pd.dismiss();
                 e.printStackTrace();
                 Toast.makeText(this, "Server exists, but did not respond correctly. Is the URL correct?", Toast.LENGTH_LONG).show();
+                FirebaseCrash.report(new Exception("JSONException: Init: " + e.toString()));
             }
         } else if (taskID == 1) {
             //session succeeded
+            //Toast.makeText(this,"Task ID: " + taskID + " : " + output,Toast.LENGTH_LONG).show();
             Log.d(TAG, output);
             pd.dismiss();
 
@@ -252,6 +257,9 @@ public class Init extends AppCompatActivity implements RNInterface {
                 case 401:
                     //deauth
                     Toast.makeText(this, "Username or password incorrect", Toast.LENGTH_SHORT).show();
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString(PREF_SESSION_KEY, "");
+                    editor.apply();
                     etPassword.setText("");
                     break;
                 case 403:
@@ -260,10 +268,15 @@ public class Init extends AppCompatActivity implements RNInterface {
                     break;
                 default:
                     Toast.makeText(this, "Something broke: " + type, Toast.LENGTH_SHORT).show();
+                    FirebaseCrash.report(new Exception("Init: Something broke: Task: " + taskId + " Type: " + type));
             }
         } else if (taskId == 1) {
             //session attempt
             //no action necessary
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(PREF_SESSION_KEY, "");
+            editor.apply();
+            etPassword.setText("");
             if(pd.isShowing()) {
                 pd.dismiss();
             }

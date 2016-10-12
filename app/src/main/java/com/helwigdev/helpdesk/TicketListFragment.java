@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -116,6 +117,7 @@ public class TicketListFragment extends ListFragment implements RNInterface {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    FirebaseCrash.report(new Exception("JSONException: TicketListFragment: " + e.toString()));
                 }
                 TicketAdapter adapter = new TicketAdapter(TicketSingleton.getInstance().getTickets());
                 setListAdapter(adapter);
@@ -139,6 +141,7 @@ public class TicketListFragment extends ListFragment implements RNInterface {
                 break;
             default:
                 Toast.makeText(getActivity(), "Something broke: " + type, Toast.LENGTH_SHORT).show();
+                FirebaseCrash.report(new Exception("TicketListFragment: Something broke: Task: " + taskId + " Type: " + type));
         }
     }
 
