@@ -62,93 +62,56 @@ public class WriteNetwork extends AsyncTask<URL, Void, String>{
                 }
 
                 Log.d(TAG, "Response Code ... " + status);
+                String newUrl = url.toString();
 
                 if (redirect) {
                     // get redirect url from "location" header field
-
-                    String newUrl = urlConnection.getHeaderField("Location");
-                    // get the cookie if need, for login
-                    String cookies = urlConnection.getHeaderField("Set-Cookie");
-
-                    // open the new connnection again
-                    urlConnection = (HttpURLConnection) new URL(newUrl).openConnection();
-
-                    //urlConnection.setRequestProperty("Cookie", cookies);
-
+                    newUrl = urlConnection.getHeaderField("Location");
 
                 }
-                if(useCookie){
-                    urlConnection.setRequestProperty("Cookie", customCookie);
-                }
+                urlConnection.disconnect();
 
-                urlConnection.setReadTimeout(10000);
-                urlConnection.setConnectTimeout(15000);
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setDoInput(true);
-                urlConnection.setDoOutput(true);
-
-                OutputStream os = urlConnection.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-                writer.write(data);
-                writer.flush();
-                writer.close();
-                os.close();
-
-                urlConnection.connect();
-                errType = urlConnection.getResponseCode();
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                cookie = urlConnection.getHeaderField("Set-Cookie");
-                Log.d(TAG, urlConnection.getResponseCode() + "");
-
-                int bytesRead;
-                byte[] buffer = new byte[1024];
-                while ((bytesRead = in.read(buffer)) > 0) {
-                    out.write(buffer, 0, bytesRead);//read data stream
-                }
-                out.close();
-                errType = urlConnection.getResponseCode();
-                return out.toString();
 
 
                 //OKHTTP start
-//                final MediaType JSON
-//                        = MediaType.parse("application/octet-stream");
-//                Log.d(TAG, data);
-//                Log.d(TAG, url.toString());
-//                OkHttpClient client = new OkHttpClient();
-//                //make request
-//                RequestBody body = RequestBody.create(JSON, data);
-//                Request request;
-//                if(useCookie){
-//                    request = new Request.Builder()
-//                            .url(url)
-//                            .post(body)
-//                            .addHeader("Cookie", customCookie + "")
-//                            .build();
-//                } else {
-//                    request = new Request.Builder()
-//                            .url(url)
-//                            .post(body)
-//                            .build();
-//                }
-//
-//
-//                //post
-//                Response response = client.newCall(request).execute();
-//
-//                //get response code & cookie
-//                String responseBody = response.body().string();
-//                List<String> headerList = response.headers("Set-Cookie");
-//                for(String header : headerList) {
-//                    cookie = header;
-//                }
-//                Log.d("OKHTTP",responseBody);
-//
-//                errType = response.code();
-//
-//                return responseBody;
+                final MediaType JSON
+                        = MediaType.parse("application/json");
+                Log.d(TAG, data);
+                Log.d(TAG, newUrl);
+                OkHttpClient client = new OkHttpClient();
+                //make request
+                RequestBody body = RequestBody.create(JSON, data);
+                Request request;
+                if(useCookie){
+                    request = new Request.Builder()
+                            .url(newUrl)
+                            .addHeader("content-type", "application/json")
+                            .addHeader("Cookie", customCookie + "")
+                            .post(body)
+                            .build();
+                } else {
+                    request = new Request.Builder()
+                            .url(newUrl)
+                            .addHeader("content-type", "application/json")
+                            .post(body)
+                            .build();
+                }
+
+
+                //post
+                Response response = client.newCall(request).execute();
+
+                //get response code & cookie
+                String responseBody = response.body().string();
+                List<String> headerList = response.headers("Set-Cookie");
+                for(String header : headerList) {
+                    cookie = header;
+                }
+                Log.d("OKHTTP Response",responseBody);
+
+                errType = response.code();
+
+                return responseBody;
 
             }catch (IOException e) {
                 e.printStackTrace();

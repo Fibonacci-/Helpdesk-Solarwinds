@@ -59,6 +59,12 @@ public class TicketListFragment extends ListFragment implements RNInterface {
         //get list of tickets
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
+        initGetTickets();
+        setRetainInstance(false);
+
+    }
+
+    private void initGetTickets(){
         String sUrl = "http://" +
                 preferences.getString(Init.PREF_SERVER, "") +
                 "/helpdesk/WebObjects/Helpdesk.woa/ra/Tickets/mine" +
@@ -73,13 +79,12 @@ public class TicketListFragment extends ListFragment implements RNInterface {
             e.printStackTrace();
         }
 
+    }
 
-        //parse to Tickets
-
-        //show in list
-
-        setRetainInstance(true);
-
+    public void refresh(){
+        Log.d(TAG, "Refreshing tickets");
+        TicketSingleton.getInstance().clear();
+        initGetTickets();
     }
 
     @Override

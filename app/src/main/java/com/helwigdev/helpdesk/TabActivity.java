@@ -3,10 +3,12 @@ package com.helwigdev.helpdesk;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +28,9 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.crash.FirebaseCrash;
 
 public class TabActivity extends AppCompatActivity {
@@ -53,6 +58,16 @@ public class TabActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //init ads
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-5637328886369714~1187638383");
+
+        AdView mAdView = (AdView) findViewById(R.id.av_tickets_bottom);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+
+        mAdView.loadAd(adRequest);
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -76,29 +91,7 @@ public class TabActivity extends AppCompatActivity {
 
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        //show disclaimer
-        if(!preferences.contains(PREF_NOTE_WARNING)){
-            //show disclaimer
 
-            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which){
-                        case DialogInterface.BUTTON_POSITIVE:
-                            //Yes button clicked
-                            //write preference
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putString(PREF_NOTE_WARNING, "seen");
-                            editor.apply();
-                            break;
-
-                    }
-                }
-            };
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(getResources().getString(R.string.note_warning)).setPositiveButton("OK", dialogClickListener).show();
-        }
 
     }
 
@@ -115,12 +108,23 @@ public class TabActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.menu_legal) {
-            startActivity(new Intent(this, AttributionActivity.class));
-            return true;
+        switch (item.getItemId()){
+            case R.id.menu_legal:
+                startActivity(new Intent(this, AttributionActivity.class));
+                return true;
+            case R.id.menu_feedback:
+                //send email
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse("mailto:helwigdev@gmail.com?subject=Feedback for Web Help Desk app");
+                intent.setData(data);
+                startActivity(intent);
+                return true;
+            case R.id.menu_tab_refresh:
+                //invalidate existing fragments
+                mSectionsPagerAdapter.refreshFragments();
+                Toast.makeText(getApplicationContext(),"Refreshed tickets",Toast.LENGTH_LONG).show();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -168,25 +172,36 @@ public class TabActivity extends AppCompatActivity {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        TicketListFragment myList;
+        TicketGroupListFragment groupList;
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+            myList = new TicketListFragment();
+            groupList = new TicketGroupListFragment();
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             if(position == 0){
-                return new TicketListFragment();
+                return myList;
             } else if(position == 1) {
-                return new TicketGroupListFragment();
+                return groupList;
             }
+
             return PlaceholderFragment.newInstance(position + 1);
+        }
+
+        private void refreshFragments(){
+            myList.refresh();
+            groupList.refresh();
+            notifyDataSetChanged();
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
+            // Show 2 total pages.
             return 2;
         }
 

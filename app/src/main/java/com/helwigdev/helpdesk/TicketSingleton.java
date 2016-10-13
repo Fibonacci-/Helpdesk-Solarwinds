@@ -30,6 +30,10 @@ public class TicketSingleton {
         return null;
     }
 
+    public void clear(){
+        tickets = new ArrayList<>();
+    }
+
     public void addTicket(Ticket ticket){
         if(getTicketById(ticket.getTicketId()) == null) tickets.add(ticket);
 

@@ -59,6 +59,7 @@ public class TicketViewFragment extends Fragment implements RNInterface {
     ListView listView;
     RelativeLayout rlTicketRelative;
     int ticketId;
+    String ticketType = "Ticket";
     String prettyLastUpdated;
 
     @Nullable
@@ -122,8 +123,8 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                                     JSONObject o = new JSONObject();
                                     o.put("noteText", etDetails.getText().toString());
                                     JSONObject tick = new JSONObject();
-                                    tick.put("type", mTicket.gettType());
-                                    tick.put("id", mTicket.getTicketId());
+                                    tick.put("type", ticketType);
+                                    tick.put("id", ticketId);
                                     o.put("jobticket", tick);
                                     o.put("worktime", etTime.getText().toString());
                                     o.put("isHidden", !cbVisible.isChecked());
@@ -219,6 +220,7 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                     tvCreatedBy.setText(s);
                     tvSubject.setText(o.getString("subject"));
                     tvDetails.setText(Html.fromHtml(o.getString("detail")));
+                    ticketType = o.getString("type");
 
                     tvId.setText(String.valueOf(ticketId));
                     String stvClient = "Client: " + o.getJSONObject("clientReporter").getString("firstName") + " " + o.getJSONObject("clientReporter").getString("lastName");
@@ -313,6 +315,31 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                 //process data returned
                 //init ticket refresh
                 Log.d("New Note:::::::", output);
+                try{
+                    JSONObject o = new JSONObject(output);
+                    if(o.has("stackTrace")){
+                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which){
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        //do nothing
+                                        break;
+
+                                }
+                            }
+                        };
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setMessage(o.getString("stackTrace"))
+                                .setPositiveButton("OK", dialogClickListener)
+                                .setTitle("Server error!")
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
                 getTicketDetails();
                 break;
         }
