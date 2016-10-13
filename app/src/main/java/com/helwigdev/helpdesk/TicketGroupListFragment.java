@@ -42,6 +42,7 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
         //mCallbacks.onTicketSelected(t);
         Intent i = new Intent(getContext(), TicketViewActivity.class);
         i.putExtra(Ticket.KEY_TICKET_ID, t.getTicketId());
+        i.putExtra(Ticket.KEY_TICKET_PRETTY_UPDATED, t.getPrettyLastUpdated());
 
         startActivity(i);
     }

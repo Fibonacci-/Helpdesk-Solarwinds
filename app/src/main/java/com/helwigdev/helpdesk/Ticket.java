@@ -22,6 +22,7 @@ public class Ticket {
     public static final int TYPE_UNKNOWN = 255;
     private static final String TAG = "Ticket";
     public static final String KEY_TICKET_ID = "key_ticket_id";
+    public static final String KEY_TICKET_PRETTY_UPDATED = "key_ticket_pretty_updated";
 
     private int id;
     private String tType;

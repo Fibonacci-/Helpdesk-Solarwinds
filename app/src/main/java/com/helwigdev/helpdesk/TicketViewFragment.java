@@ -32,8 +32,12 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 
 public class TicketViewFragment extends Fragment implements RNInterface {
@@ -55,12 +59,14 @@ public class TicketViewFragment extends Fragment implements RNInterface {
     ListView listView;
     RelativeLayout rlTicketRelative;
     int ticketId;
+    String prettyLastUpdated;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         ticketId = getActivity().getIntent().getIntExtra(Ticket.KEY_TICKET_ID, -1);
+        prettyLastUpdated = getActivity().getIntent().getStringExtra(Ticket.KEY_TICKET_PRETTY_UPDATED);
         if (ticketId == -1) {
             Toast.makeText(getActivity(), "Internal error", Toast.LENGTH_SHORT).show();
             getActivity().finish();
@@ -214,6 +220,17 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                     tvSubject.setText(o.getString("subject"));
                     tvDetails.setText(Html.fromHtml(o.getString("detail")));
 
+                    tvId.setText(String.valueOf(ticketId));
+                    String stvClient = "Client: " + o.getJSONObject("clientReporter").getString("firstName") + " " + o.getJSONObject("clientReporter").getString("lastName");
+                    tvClient.setText(stvClient);
+                    tvPrettyUpdated.setText(prettyLastUpdated);
+                    String sUpdated = o.getString("lastUpdated");
+                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'", Locale.ENGLISH);
+                    Date lastUpdated = format.parse(sUpdated);
+                    tvUpdated.setText(lastUpdated.toString());
+//                    tvSubject.setText(mTicket.getShortSubject());
+//                    tvDetails.setText(mTicket.getShortDetail());
+
                     //add notes
 
                     try{
@@ -284,6 +301,8 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                     svTicketScroll.requestLayout();
 
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
                 break;
