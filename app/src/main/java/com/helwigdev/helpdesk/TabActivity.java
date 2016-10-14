@@ -1,5 +1,6 @@
 package com.helwigdev.helpdesk;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,6 +51,7 @@ public class TabActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +92,40 @@ public class TabActivity extends AppCompatActivity {
         });
 
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
+        pd = new ProgressDialog(this);
 
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        //reload tickets when coming back to activity
+        //TODO tie to settings object
+        refreshAndNotify();
+    }
+
+    public boolean myTicketsRefreshed = true;
+    public boolean groupTicketsRefreshed = true;
+
+    public void dismissPd() {
+        if(myTicketsRefreshed && groupTicketsRefreshed) {
+            try {
+                pd.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void refreshAndNotify() {
+        myTicketsRefreshed = false;
+        groupTicketsRefreshed = false;
+        pd.setMessage(getResources().getString(R.string.loading));
+        pd.show();
+        mSectionsPagerAdapter.refreshFragments();
+        //Toast.makeText(getApplicationContext(),"Refreshing tickets...",Toast.LENGTH_LONG).show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -109,7 +140,7 @@ public class TabActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_legal:
                 startActivity(new Intent(this, AttributionActivity.class));
                 return true;
@@ -122,8 +153,8 @@ public class TabActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_tab_refresh:
                 //invalidate existing fragments
-                mSectionsPagerAdapter.refreshFragments();
-                Toast.makeText(getApplicationContext(),"Refreshed tickets",Toast.LENGTH_LONG).show();
+                refreshAndNotify();
+
                 return true;
         }
 
@@ -184,16 +215,16 @@ public class TabActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            if(position == 0){
+            if (position == 0) {
                 return myList;
-            } else if(position == 1) {
+            } else if (position == 1) {
                 return groupList;
             }
 
             return PlaceholderFragment.newInstance(position + 1);
         }
 
-        private void refreshFragments(){
+        private void refreshFragments() {
             myList.refresh();
             groupList.refresh();
             notifyDataSetChanged();

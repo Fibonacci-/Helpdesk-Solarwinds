@@ -90,8 +90,19 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
         getListView().setDivider(null);
     }
 
+    private void dismissActivityPd(){
+        try{
+            TabActivity a = (TabActivity) getActivity();
+            a.groupTicketsRefreshed = true;
+            a.dismissPd();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void processResult(String output, int taskID) {
+        dismissActivityPd();
         switch (taskID) {
             case 0:
                 //process initial result
@@ -118,6 +129,7 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
     @Override
     public void authErr(int type, int taskId) {
         if (this.isDetached()) return;
+        dismissActivityPd();
         switch (type) {
             case 401:
                 //deauth
@@ -126,6 +138,9 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
             case 403:
                 //not allowed
                 Toast.makeText(getActivity(), "You are not allowed to do that.", Toast.LENGTH_SHORT).show();
+                break;
+            case 444:
+                Toast.makeText(getActivity(),"Network timeout",Toast.LENGTH_LONG).show();
                 break;
             default:
                 Toast.makeText(getActivity(), "Something broke: " + type, Toast.LENGTH_SHORT).show();

@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -49,12 +50,17 @@ public class ReadNetwork extends AsyncTask<URL, Void, String> {
 
             try {
 
-                OkHttpClient client = new OkHttpClient();
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .connectTimeout(10, TimeUnit.SECONDS)
+                        .writeTimeout(10, TimeUnit.SECONDS)
+                        .readTimeout(30, TimeUnit.SECONDS)
+                        .build();
+
                 client.followSslRedirects();
                 Request request;
-                Log.d("OKHTTP",url.toString());
-                if(useCookie){
-                    Log.d("OKHTTP","Using cookie!");
+                Log.d("OKHTTP", url.toString());
+                if (useCookie) {
+                    Log.d("OKHTTP", "Using cookie!");
                     request = new Request.Builder()
                             .url(url)
                             .get()
@@ -72,28 +78,31 @@ public class ReadNetwork extends AsyncTask<URL, Void, String> {
                 Response response = client.newCall(request).execute();
                 String body = response.body().string();
                 List<String> headerList = response.headers("Set-Cookie");
-                for(String header : headerList) {
+                for (String header : headerList) {
                     cookie = header;
                 }
-                Log.d("OKHTTP",body);
+                Log.d("OKHTTP response body", body);
+
 
                 errType = response.code();
+                Log.d("OKHTTP response code", errType + "");
                 return body;
-            }catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
         }
-        return "error";
+        errType = 444;
+        return "Network timeout";
     }
 
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        if(cookie != null) rn.setCookie(cookie);
-        if(s.equals("error") || s.equals("Authentication Required.")){
-            rn.authErr(errType, taskID);
-        } else if(errType < 200 || errType >= 300){
+        if (cookie != null) rn.setCookie(cookie);
+        //detect failure conditions
+        if (s.equals("error") || s.equals("Authentication Required.") || errType < 199 || errType > 300) {
+            Log.d(TAG, "Caught response error: data: " + s + " :: response code: " + errType);
             rn.authErr(errType, taskID);
         }
         else {

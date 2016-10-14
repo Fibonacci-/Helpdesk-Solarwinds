@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -78,7 +79,11 @@ public class WriteNetwork extends AsyncTask<URL, Void, String>{
                         = MediaType.parse("application/json");
                 Log.d(TAG, data);
                 Log.d(TAG, newUrl);
-                OkHttpClient client = new OkHttpClient();
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .connectTimeout(10, TimeUnit.SECONDS)
+                        .writeTimeout(10, TimeUnit.SECONDS)
+                        .readTimeout(30, TimeUnit.SECONDS)
+                        .build();
                 //make request
                 RequestBody body = RequestBody.create(JSON, data);
                 Request request;
@@ -125,7 +130,8 @@ public class WriteNetwork extends AsyncTask<URL, Void, String>{
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         if(cookie != null) rn.setCookie(cookie);
-        if(s.equals("error") || s.equals("Authentication Required.")){
+        if (s.equals("error") || s.equals("Authentication Required.") || errType < 199 || errType > 300) {
+            Log.d(TAG, "Caught response error: data: " + s + " :: response code: " + errType);
             rn.authErr(errType, taskID);
         } else {
             rn.processResult(s, taskID);

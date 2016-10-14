@@ -129,6 +129,8 @@ public class Init extends AppCompatActivity implements RNInterface {
             @Override
             public void onClick(View v) {
                 //get values for everything
+                pd.setMessage(getResources().getString(R.string.loading));
+                pd.show();
                 String servername = etServer.getText().toString();
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
@@ -252,6 +254,7 @@ public class Init extends AppCompatActivity implements RNInterface {
 
     @Override
     public void authErr(int type, int taskId) {
+        pd.dismiss();
         if (taskId == 0) {
             switch (type) {
                 case 401:
@@ -265,6 +268,9 @@ public class Init extends AppCompatActivity implements RNInterface {
                 case 403:
                     //not allowed
                     Toast.makeText(this, "You are not allowed to do that.", Toast.LENGTH_SHORT).show();
+                    break;
+                case 444:
+                    Toast.makeText(this,"Network timeout",Toast.LENGTH_LONG).show();
                     break;
                 default:
                     Toast.makeText(this, "Something broke: " + type, Toast.LENGTH_SHORT).show();
