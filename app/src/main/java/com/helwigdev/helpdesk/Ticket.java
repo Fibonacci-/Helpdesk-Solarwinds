@@ -124,7 +124,6 @@ public class Ticket {
         String s = o.getString("lastUpdated");
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'", Locale.ENGLISH);
         lastUpdated = format.parse(s);
-
         this.shortSubject = o.getString("shortSubject");
         this.shortDetail = o.getString("shortDetail");
         this.displayClient = o.getString("displayClient");
