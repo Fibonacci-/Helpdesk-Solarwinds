@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.helwigdev.helpdesk.TabActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    tools:context="com.helwigdev.helpdesk.TabActivity">
 
 
     <android.support.design.widget.CoordinatorLayout
 
         xmlns:app="http://schemas.android.com/apk/res-auto"
-
         android:id="@+id/main_content"
         android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fitsSystemWindows="true">
+        <LinearLayout
+            android:id="@+id/useless"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:layout_above="@+id/av_tickets_bottom">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
@@ -45,14 +47,12 @@
 
         </android.support.design.widget.AppBarLayout>
 
-
         <android.support.v4.view.ViewPager
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
@@ -61,6 +61,7 @@
             android:layout_margin="@dimen/fab_margin"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_add" />
+        </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 
@@ -68,9 +69,8 @@
         android:id="@+id/av_tickets_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-5637328886369714/3861903182">
-    </com.google.android.gms.ads.AdView>
-</RelativeLayout>
+        ads:adUnitId="ca-app-pub-5637328886369714/3861903182" />
+</LinearLayout>

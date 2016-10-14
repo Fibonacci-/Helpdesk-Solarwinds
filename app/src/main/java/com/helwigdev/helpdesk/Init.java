@@ -132,8 +132,11 @@ public class Init extends AppCompatActivity implements RNInterface {
                 pd.setMessage(getResources().getString(R.string.loading));
                 pd.show();
                 String servername = etServer.getText().toString();
+                servername = servername.trim();//why oh why
                 String username = etUsername.getText().toString();
+                username = username.trim();
                 String password = etPassword.getText().toString();
+                password = password.trim();
 
                 if (servername.equals("") || username.equals("") || password.equals("")) {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.err_fields_not_full), Toast.LENGTH_LONG).show();
