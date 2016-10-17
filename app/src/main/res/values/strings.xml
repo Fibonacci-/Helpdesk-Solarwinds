@@ -115,12 +115,12 @@ limitations under the License.</string>
     <string name="drawer_close">Drawer Close</string>
     <string name="title_activity_tab">TabActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
-    <string name="note_warning">Adding notes is currently very buggy. Use caution.</string>
+
     <string name="send_feedback">Send feedback</string>
     <string name="refresh">Refresh</string>
     <string name="functionality">Functionality</string>
     <string name="auto_refresh">Auto refresh</string>
-    <string name="auto_refresh_detail">Automatically refresh tickets when navigating back to ticket list</string>
+    <string name="auto_refresh_detail">Refresh tickets when navigating back to ticket list. Disable on slow connections.</string>
     <string name="remove_ads">Remove ads</string>
     <string name="remove_ads_detail">Pay a small fee to remove ads and help out the developer</string>
     <string name="developer_info">Developer info</string>
@@ -131,4 +131,8 @@ limitations under the License.</string>
     <string name="admob_id">AdMob Device ID</string>
     <string name="model">Model</string>
     <string name="thanks_billing">Successfuly removed ads. Thanks!</string>
+    <string name="restore_purchase">Restore purchases</string>
+    <string name="restore_purchase_detail">Select to restore previous ad removal purchase</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="already_owned">You\'ve bought this already. Restoring purchase...</string>
 </resources>

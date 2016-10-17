@@ -155,9 +155,6 @@ public class TabActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
 
         switch (item.getItemId()) {
-            case R.id.menu_legal:
-                startActivity(new Intent(this, AttributionActivity.class));
-                return true;
             case R.id.menu_feedback:
                 //send email
                 Intent intent = new Intent(Intent.ACTION_VIEW);

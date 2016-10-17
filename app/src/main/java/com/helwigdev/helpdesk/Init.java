@@ -105,7 +105,7 @@ public class Init extends AppCompatActivity implements RNInterface {
             };
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(getResources().getString(R.string.disclaimer)).setPositiveButton("I read the whole paragraph", dialogClickListener)
+            builder.setMessage(getResources().getString(R.string.disclaimer)).setPositiveButton("Gotcha", dialogClickListener)
                     .setNegativeButton("No", dialogClickListener).show();
         }
 
@@ -149,6 +149,7 @@ public class Init extends AppCompatActivity implements RNInterface {
 
                 if (servername.equals("") || username.equals("") || password.equals("")) {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.err_fields_not_full), Toast.LENGTH_LONG).show();
+                    pd.dismiss();
                     return;
                 }
 

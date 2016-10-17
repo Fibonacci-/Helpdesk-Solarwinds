@@ -17,9 +17,9 @@
         android:title="@string/refresh"
         />
 
-    <item
-        android:id="@+id/menu_legal"
-        android:title="@string/string_legal" />
+    <!--<item-->
+        <!--android:id="@+id/menu_legal"-->
+        <!--android:title="@string/string_legal" />-->
     <item
         android:id="@+id/menu_feedback"
         android:title="@string/send_feedback" />

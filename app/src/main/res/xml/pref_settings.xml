@@ -14,11 +14,19 @@
             android:summary="@string/remove_ads_detail"
             android:key="key_pref_action_remove_ads"/>
 
+        <Preference android:title="@string/restore_purchase"
+            android:summary="@string/restore_purchase_detail"
+            android:key="key_pref_action_restore_purchase"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
         android:key="key_pref_info"
         android:title="@string/developer_info"
-        />
+        >
+        <Preference android:title="@string/string_legal"
+            android:key="key_pref_legal"
+            android:order="99"/>
+        </PreferenceCategory>
 
 </PreferenceScreen>
