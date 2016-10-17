@@ -118,4 +118,12 @@ limitations under the License.</string>
     <string name="note_warning">Adding notes is currently very buggy. Use caution.</string>
     <string name="send_feedback">Send feedback</string>
     <string name="refresh">Refresh</string>
+    <string name="functionality">Functionality</string>
+    <string name="auto_refresh">Auto refresh</string>
+    <string name="auto_refresh_detail">Automatically refresh tickets when navigating back to ticket list</string>
+    <string name="remove_ads">Remove ads</string>
+    <string name="remove_ads_detail">Pay a small fee to remove ads and help out the developer</string>
+    <string name="developer_info">Developer info</string>
+    <string name="firebase_id_title">Firebase registration token</string>
+    <string name="not_set">Not set</string>
 </resources>

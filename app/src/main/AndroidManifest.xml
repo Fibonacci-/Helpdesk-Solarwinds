@@ -19,15 +19,7 @@
         </activity>
         <activity android:name=".TicketViewActivity" />
         <activity android:name=".AttributionActivity" />
-        <activity android:name=".DrawerHostActivity" />
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".TabActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.helwigdev.helpdesk.TabActivity" />
-        </activity>
+        <activity android:name=".SettingsActivity" />
         <activity
             android:name=".TabActivity"
             android:label="@string/title_activity_tab"

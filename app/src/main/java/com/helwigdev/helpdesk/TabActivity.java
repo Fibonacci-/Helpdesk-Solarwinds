@@ -156,6 +156,9 @@ public class TabActivity extends AppCompatActivity {
                 refreshAndNotify();
 
                 return true;
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

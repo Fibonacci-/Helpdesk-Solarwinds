@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- opens a subscreen of settings -->
+    <PreferenceCategory
+        android:key="pref_key_functionality"
+        android:title="@string/functionality">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="key_pref_bool_tick_auto_refresh"
+            android:summary="@string/auto_refresh_detail"
+            android:title="@string/auto_refresh" />
+
+        <Preference android:title="@string/remove_ads"
+            android:summary="@string/remove_ads_detail"
+            android:key="key_pref_action_remove_ads"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="key_pref_info"
+        android:title="@string/developer_info"
+        />
+
+</PreferenceScreen>
