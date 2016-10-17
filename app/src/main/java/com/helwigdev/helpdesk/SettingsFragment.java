@@ -96,10 +96,10 @@ public class SettingsFragment extends PreferenceFragment {
                 if (mService != null) {
                     try {
 
-//                        Bundle buyIntentBundle = mService.getBuyIntent(3, getActivity().getPackageName(),
-//                                SKU_REMOVE_ADS, "inapp", serial);
                         Bundle buyIntentBundle = mService.getBuyIntent(3, getActivity().getPackageName(),
-                                "android.test.purchased", "inapp", serial);
+                                SKU_REMOVE_ADS, "inapp", serial);
+//                        Bundle buyIntentBundle = mService.getBuyIntent(3, getActivity().getPackageName(),
+//                                "android.test.purchased", "inapp", serial);
                         Log.d(TAG, "Ad removal: response code: " + buyIntentBundle.getInt("RESPONSE_CODE"));
 
                         FirebaseAnalytics.getInstance(getActivity()).logEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT, new Bundle());
