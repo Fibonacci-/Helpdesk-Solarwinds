@@ -60,15 +60,22 @@ public class Init extends AppCompatActivity implements RNInterface {
          */
 
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-5637328886369714~1187638383");
-
         AdView mAdView = (AdView) findViewById(R.id.av_init_bottom);
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .build();
-
-        mAdView.loadAd(adRequest);
-        //FirebaseCrash.report(new Exception("Testing crash reporting"));
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if(!preferences.getBoolean(SettingsActivity.PREF_ADS_REMOVED, false)) {
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                    .addTestDevice("E498D046420E068963DD7607B804BA3D")
+                    .build();
+
+            mAdView.loadAd(adRequest);
+        } else {
+            //remove ad
+            mAdView.setVisibility(View.GONE);
+        }
+        //FirebaseCrash.report(new Exception("Testing crash reporting"));
+
 
         PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
 

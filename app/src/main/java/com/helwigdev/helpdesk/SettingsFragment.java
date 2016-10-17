@@ -1,16 +1,19 @@
 package com.helwigdev.helpdesk;
 
+import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
@@ -24,6 +27,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
@@ -34,11 +38,15 @@ import static android.content.Context.CLIPBOARD_SERVICE;
 
 public class SettingsFragment extends PreferenceFragment {
 
+    private static final String TAG = "SettingsFragment";
+    protected static final String SKU_REMOVE_ADS = "iap_whd_remove_ads";
+    protected static final int PURCHASE_ADS_REQUEST_CODE = 1000;
     Preference removeAds;
     PreferenceCategory devInfo;
 
-    IInAppBillingService mService;
 
+
+    IInAppBillingService mService;
     ServiceConnection mServiceConn = new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {
@@ -49,13 +57,17 @@ public class SettingsFragment extends PreferenceFragment {
         public void onServiceConnected(ComponentName name,
                                        IBinder service) {
             mService = IInAppBillingService.Stub.asInterface(service);
+            Log.d("TEST", "mService ready to go!");
         }
     };
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent serviceIntent = new Intent("com.android.vending.billing.InAppBillingService.BIND");
+        serviceIntent.setPackage("com.android.vending");
+        getActivity().bindService(serviceIntent, mServiceConn, Context.BIND_AUTO_CREATE);
 
         final String fireId = FirebaseInstanceId.getInstance().getToken();
         // Load the preferences from an XML resource
@@ -63,24 +75,43 @@ public class SettingsFragment extends PreferenceFragment {
         removeAds = findPreference("key_pref_action_remove_ads");
         devInfo = (PreferenceCategory) findPreference("key_pref_info");
 
-        //set up billing
-        Intent serviceIntent =
-                new Intent("com.android.vending.billing.InAppBillingService.BIND");
-        serviceIntent.setPackage("com.android.vending");
-        getActivity().bindService(serviceIntent, mServiceConn, Context.BIND_AUTO_CREATE);
 
         removeAds.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                //TODO init billing
-                return false;
+                //TODO init billing & check purchases
+
+                String serial = Build.SERIAL;
+
+
+                if (mService != null) {
+                    try {
+                        Bundle buyIntentBundle = mService.getBuyIntent(3, getActivity().getPackageName(),
+                                SKU_REMOVE_ADS, "inapp", serial);
+                        if (buyIntentBundle.getInt("RESPONSE_CODE") == 0) {
+                            Log.i("Billing start", "Got billing intent OK");
+                            PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
+                            getActivity().startIntentSenderForResult(pendingIntent.getIntentSender(),
+                                    PURCHASE_ADS_REQUEST_CODE, new Intent(), 0, 0, 0);
+                        }
+                    } catch (RemoteException | IntentSender.SendIntentException e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                } else {
+                    Toast.makeText(getActivity(), "Could not initialize billing service. :-(", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+
+
+
             }
         });
 
         //get IDs and display
         Preference firebaseID = new Preference(getActivity());
         firebaseID.setTitle(getResources().getString(R.string.firebase_id_title));
-        if(fireId != null){
+        if (fireId != null) {
             firebaseID.setSummary(fireId);
         } else {
             firebaseID.setSummary(getResources().getString(R.string.not_set));
@@ -89,11 +120,11 @@ public class SettingsFragment extends PreferenceFragment {
         firebaseID.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                ClipboardManager myClipboard = (ClipboardManager)getActivity().getSystemService(CLIPBOARD_SERVICE);
+                ClipboardManager myClipboard = (ClipboardManager) getActivity().getSystemService(CLIPBOARD_SERVICE);
 
-                ClipData myClip = ClipData.newPlainText(fireId,fireId);
+                ClipData myClip = ClipData.newPlainText(fireId, fireId);
                 myClipboard.setPrimaryClip(myClip);
-                Log.d("Firebase ID",fireId);
+                Log.d("Firebase ID", fireId);
                 Toast.makeText(getActivity(), "Sent Firebase ID to clipboard & logcat", Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -130,11 +161,11 @@ public class SettingsFragment extends PreferenceFragment {
         prefAdmobId.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                ClipboardManager myClipboard = (ClipboardManager)getActivity().getSystemService(CLIPBOARD_SERVICE);
+                ClipboardManager myClipboard = (ClipboardManager) getActivity().getSystemService(CLIPBOARD_SERVICE);
 
-                ClipData myClip = ClipData.newPlainText(deviceId,deviceId);
+                ClipData myClip = ClipData.newPlainText(deviceId, deviceId);
                 myClipboard.setPrimaryClip(myClip);
-                Log.d("AdMob Device ID",deviceId);
+                Log.d("AdMob Device ID", deviceId);
                 Toast.makeText(getActivity(), "Sent AdMob Device ID to clipboard & logcat", Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -146,13 +177,6 @@ public class SettingsFragment extends PreferenceFragment {
         devInfo.addPreference(firebaseID);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mService != null) {
-            getActivity().unbindService(mServiceConn);
-        }
-    }
 
     public static String md5(final String s) {
         try {

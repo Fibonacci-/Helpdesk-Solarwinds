@@ -130,4 +130,5 @@ limitations under the License.</string>
     <string name="version_id">Version ID</string>
     <string name="admob_id">AdMob Device ID</string>
     <string name="model">Model</string>
+    <string name="thanks_billing">Successfuly removed ads. Thanks!</string>
 </resources>

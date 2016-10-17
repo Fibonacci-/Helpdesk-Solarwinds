@@ -53,6 +53,7 @@ public class TabActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     ProgressDialog pd;
     SharedPreferences preferences;
+    AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +61,22 @@ public class TabActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tab);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         //init ads
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-5637328886369714~1187638383");
+        mAdView = (AdView) findViewById(R.id.av_tickets_bottom);
+        //if ads have not been removed
+        if(!preferences.getBoolean(SettingsActivity.PREF_ADS_REMOVED, false)) {
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                    .addTestDevice("E498D046420E068963DD7607B804BA3D")
+                    .build();
 
-        AdView mAdView = (AdView) findViewById(R.id.av_tickets_bottom);
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .build();
-
-        mAdView.loadAd(adRequest);
+            mAdView.loadAd(adRequest);
+        } else {
+            mAdView.setVisibility(View.GONE);
+        }
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -92,7 +99,7 @@ public class TabActivity extends AppCompatActivity {
             }
         });
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         pd = new ProgressDialog(this);
 
 
@@ -102,7 +109,10 @@ public class TabActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         //reload tickets when coming back to activity
-        //TODO tie to settings object
+        if(preferences.getBoolean(SettingsActivity.PREF_ADS_REMOVED, false)) {
+            mAdView.setVisibility(View.GONE);
+        }
+
         Boolean toRefresh = preferences.getBoolean("key_pref_bool_tick_auto_refresh", true);
         if(toRefresh) {
             refreshAndNotify();
