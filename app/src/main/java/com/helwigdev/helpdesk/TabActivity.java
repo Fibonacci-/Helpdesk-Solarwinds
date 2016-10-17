@@ -52,6 +52,7 @@ public class TabActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
     ProgressDialog pd;
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,7 @@ public class TabActivity extends AppCompatActivity {
             }
         });
 
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         pd = new ProgressDialog(this);
 
 
@@ -102,7 +103,10 @@ public class TabActivity extends AppCompatActivity {
         super.onRestart();
         //reload tickets when coming back to activity
         //TODO tie to settings object
-        refreshAndNotify();
+        Boolean toRefresh = preferences.getBoolean("key_pref_bool_tick_auto_refresh", true);
+        if(toRefresh) {
+            refreshAndNotify();
+        }
     }
 
     public boolean myTicketsRefreshed = true;

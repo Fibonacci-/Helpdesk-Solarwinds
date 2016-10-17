@@ -70,6 +70,8 @@ public class Init extends AppCompatActivity implements RNInterface {
         //FirebaseCrash.report(new Exception("Testing crash reporting"));
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
+
         //show disclaimer
         if(!preferences.contains(PREF_DISCLAIMER)){
             //show disclaimer
@@ -203,13 +205,13 @@ public class Init extends AppCompatActivity implements RNInterface {
         if (taskID == 0) {//initial login check
             //should pop up a progress dialog
 
-            pd.setMessage(getResources().getString(R.string.loading));
-            pd.show();
-
             Log.d(TAG, "Recv net request");
             Log.d(TAG, output);
             //Toast.makeText(this,"Task ID: " + taskID + " : " + output,Toast.LENGTH_LONG).show();
             try {
+
+                pd.setMessage(getResources().getString(R.string.loading));
+                pd.show();
                 JSONObject o = new JSONObject(output);
                 if (o.getString("type").equals("Session")) {
                     //OK to continue
@@ -240,8 +242,11 @@ public class Init extends AppCompatActivity implements RNInterface {
             } catch (JSONException e) {
                 pd.dismiss();
                 e.printStackTrace();
-                Toast.makeText(this, "Server exists, but did not respond correctly. Is the URL correct?", Toast.LENGTH_LONG).show();
-                FirebaseCrash.report(new Exception("JSONException: Init: " + e.toString()));
+                Toast.makeText(this, "Server exists, but did not respond correctly. Is the URL correct?", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Error data:" + e.toString(), Toast.LENGTH_LONG).show();
+                //FirebaseCrash.report(new Exception("JSONException: Init: " + e.toString()));
+            } catch (Exception e){
+                FirebaseCrash.report(e);
             }
         } else if (taskID == 1) {
             //session succeeded

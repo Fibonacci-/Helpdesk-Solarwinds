@@ -126,4 +126,8 @@ limitations under the License.</string>
     <string name="developer_info">Developer info</string>
     <string name="firebase_id_title">Firebase registration token</string>
     <string name="not_set">Not set</string>
+    <string name="version_name">Version Name</string>
+    <string name="version_id">Version ID</string>
+    <string name="admob_id">AdMob Device ID</string>
+    <string name="model">Model</string>
 </resources>
