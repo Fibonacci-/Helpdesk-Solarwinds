@@ -285,12 +285,19 @@ public class Init extends AppCompatActivity implements RNInterface {
                     //not allowed
                     Toast.makeText(this, "You are not allowed to do that.", Toast.LENGTH_SHORT).show();
                     break;
+                case 404:
+                    //not allowed
+                    Toast.makeText(this, "404 Not Found. Is the URL correct?", Toast.LENGTH_SHORT).show();
+                    break;
                 case 444:
                     Toast.makeText(this,"Network timeout",Toast.LENGTH_LONG).show();
                     break;
+                case 503:
+                    Toast.makeText(this,"503 service unavailable. Try again in a few minutes",Toast.LENGTH_LONG).show();
+                    break;
                 default:
-                    Toast.makeText(this, "Something broke: " + type, Toast.LENGTH_SHORT).show();
-                    FirebaseCrash.report(new Exception("Init: Something broke: Task: " + taskId + " Type: " + type));
+                    Toast.makeText(this, "Server returned error: " + type, Toast.LENGTH_SHORT).show();
+                    FirebaseCrash.report(new Exception("Init: Server returned error: Task: " + taskId + " Type: " + type));
             }
         } else if (taskId == 1) {
             //session attempt
