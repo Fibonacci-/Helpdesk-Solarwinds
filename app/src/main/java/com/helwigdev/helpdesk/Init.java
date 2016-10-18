@@ -54,9 +54,7 @@ public class Init extends AppCompatActivity implements RNInterface {
         /*
         TODO
         implement searching
-        add progress indicator while logging in
-        put ads in
-        put ad removal charge in
+        add notifications
          */
 
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-5637328886369714~1187638383");

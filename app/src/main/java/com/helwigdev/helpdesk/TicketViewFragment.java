@@ -128,7 +128,7 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                                     o.put("jobticket", tick);
                                     o.put("worktime", etTime.getText().toString());
                                     o.put("isHidden", !cbVisible.isChecked());
-                                    o.put("isSolution", false);//TODO
+                                    o.put("isSolution", false);
                                     o.put("emailClient", cbEmailClient.isChecked());
                                     o.put("emailTech", cbEmailTech.isChecked());
 

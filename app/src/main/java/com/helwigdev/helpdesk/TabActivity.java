@@ -67,7 +67,7 @@ public class TabActivity extends AppCompatActivity {
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-5637328886369714~1187638383");
         mAdView = (AdView) findViewById(R.id.av_tickets_bottom);
         //if ads have not been removed
-        if(!preferences.getBoolean(SettingsActivity.PREF_ADS_REMOVED, false)) {
+        if (!preferences.getBoolean(SettingsActivity.PREF_ADS_REMOVED, false)) {
             AdRequest adRequest = new AdRequest.Builder()
                     .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                     .addTestDevice("E498D046420E068963DD7607B804BA3D")
@@ -109,21 +109,25 @@ public class TabActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         //reload tickets when coming back to activity
-        if(preferences.getBoolean(SettingsActivity.PREF_ADS_REMOVED, false)) {
+        if (preferences == null) {
+            preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        }
+        if (preferences.getBoolean(SettingsActivity.PREF_ADS_REMOVED, false)) {
             mAdView.setVisibility(View.GONE);
         }
 
         Boolean toRefresh = preferences.getBoolean("key_pref_bool_tick_auto_refresh", true);
-        if(toRefresh) {
+        if (toRefresh) {
             refreshAndNotify();
         }
+
     }
 
     public boolean myTicketsRefreshed = true;
     public boolean groupTicketsRefreshed = true;
 
     public void dismissPd() {
-        if(myTicketsRefreshed && groupTicketsRefreshed) {
+        if (myTicketsRefreshed && groupTicketsRefreshed) {
             try {
                 pd.dismiss();
             } catch (Exception e) {
