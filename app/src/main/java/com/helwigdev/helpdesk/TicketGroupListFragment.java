@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ListFragment;
 import android.text.Html;
 import android.util.Log;
@@ -38,8 +39,8 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        //start ticket view activity
         Ticket t = ((TicketAdapter) getListAdapter()).getItem(position);
-        //mCallbacks.onTicketSelected(t);
         Intent i = new Intent(getContext(), TicketViewActivity.class);
         i.putExtra(Ticket.KEY_TICKET_ID, t.getTicketId());
         i.putExtra(Ticket.KEY_TICKET_PRETTY_UPDATED, t.getPrettyLastUpdated());
@@ -62,6 +63,7 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
     }
 
     private void initGetTickets(){
+        //build web request
         String sUrl = "http://" +
                 preferences.getString(Init.PREF_SERVER, "") +
                 "/helpdesk/WebObjects/Helpdesk.woa/ra/Tickets/group" +
@@ -79,6 +81,7 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
     }
 
     public void refresh(){
+        //finish refresh cascade
         Log.d(TAG, "Refreshing tickets");
         TicketGroupSingleton.getInstance().clear();
         initGetTickets();
@@ -87,10 +90,12 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        //incredibly important, do not remove
         getListView().setDivider(null);
     }
 
     private void dismissActivityPd(){
+        //request host activity to remove progressbar
         try{
             TabActivity a = (TabActivity) getActivity();
             a.groupTicketsRefreshed = true;
@@ -102,6 +107,7 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
 
     @Override
     public void processResult(String output, int taskID) {
+        //process returned data
         dismissActivityPd();
         switch (taskID) {
             case 0:
@@ -133,6 +139,7 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
         switch (type) {
             case 401:
                 //deauth
+                //TODO rewrite to init session refresh dialog
                 Toast.makeText(getActivity(), "Session expired - please exit and re-open app", Toast.LENGTH_SHORT).show();
                 break;
             case 403:
@@ -162,8 +169,10 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
             super(getActivity(), 0, tickets);
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            //instantiate the partial view if it is not already
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.part_ticket, null);

@@ -36,6 +36,8 @@ import com.google.firebase.crash.FirebaseCrash;
 
 public class TabActivity extends AppCompatActivity {
 
+    //set up method variables
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -45,7 +47,6 @@ public class TabActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private static final String PREF_NOTE_WARNING = "pref_note_warning_tabs";
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -58,6 +59,8 @@ public class TabActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //set up views
         setContentView(R.layout.activity_tab);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -89,7 +92,8 @@ public class TabActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        //email buttom (new ticket?)
+        //email button (new ticket?)
+        //disabled for the moment
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,14 +112,18 @@ public class TabActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        //reload tickets when coming back to activity
+
+        //re-set up preferences if the object has been lost
         if (preferences == null) {
             preferences = PreferenceManager.getDefaultSharedPreferences(this);
         }
+
+        //remove ads if necessary
         if (preferences.getBoolean(SettingsActivity.PREF_ADS_REMOVED, false)) {
             mAdView.setVisibility(View.GONE);
         }
 
+        //reload tickets when coming back to activity
         Boolean toRefresh = preferences.getBoolean("key_pref_bool_tick_auto_refresh", true);
         if (toRefresh) {
             refreshAndNotify();
@@ -127,6 +135,7 @@ public class TabActivity extends AppCompatActivity {
     public boolean groupTicketsRefreshed = true;
 
     public void dismissPd() {
+        //only dismiss loading screen if both views have successfully refreshed
         if (myTicketsRefreshed && groupTicketsRefreshed) {
             try {
                 pd.dismiss();
@@ -137,10 +146,12 @@ public class TabActivity extends AppCompatActivity {
     }
 
     private void refreshAndNotify() {
+        //set up refresh framework
         myTicketsRefreshed = false;
         groupTicketsRefreshed = false;
         pd.setMessage(getResources().getString(R.string.loading));
         pd.show();
+        //continue refresh cascade
         mSectionsPagerAdapter.refreshFragments();
         //Toast.makeText(getApplicationContext(),"Refreshing tickets...",Toast.LENGTH_LONG).show();
     }
@@ -159,6 +170,7 @@ public class TabActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
 
         switch (item.getItemId()) {
+            //handle menu item clicks
             case R.id.menu_feedback:
                 //send email
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -167,19 +179,18 @@ public class TabActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.menu_tab_refresh:
-                //invalidate existing fragments
+                //begin refresh cascade
                 refreshAndNotify();
-
                 return true;
             case R.id.action_settings:
+                //it's pretty self explanatory
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-
+    //left in place until search fragment can be implemented
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -220,7 +231,7 @@ public class TabActivity extends AppCompatActivity {
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
+        //controls tabs
         TicketListFragment myList;
         TicketGroupListFragment groupList;
 
@@ -243,6 +254,7 @@ public class TabActivity extends AppCompatActivity {
         }
 
         private void refreshFragments() {
+            //continue refresh cascade
             myList.refresh();
             groupList.refresh();
             notifyDataSetChanged();

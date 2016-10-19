@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 public class AttributionActivity extends AppCompatActivity {
 
+    //just display legal text
+    //nothing fancy
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

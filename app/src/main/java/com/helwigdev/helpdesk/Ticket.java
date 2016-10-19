@@ -37,6 +37,8 @@ public class Ticket {
     private String createdBy;
     private ArrayList<TicketNote> notes;
 
+    //data object to hold ticket info
+
 
     public Ticket(JSONObject o, int type) {
         notes = new ArrayList<>();
