@@ -142,12 +142,19 @@ public class TicketListFragment extends ListFragment implements RNInterface {
                 //not allowed
                 Toast.makeText(getActivity(), "You are not allowed to do that.", Toast.LENGTH_SHORT).show();
                 break;
+            case 404:
+                //not allowed
+                Toast.makeText(getActivity(), "404 Not Found. Is the URL correct?", Toast.LENGTH_SHORT).show();
+                break;
             case 444:
                 Toast.makeText(getActivity(),"Network timeout",Toast.LENGTH_LONG).show();
                 break;
+            case 503:
+                Toast.makeText(getActivity(),"503 service unavailable. Try again in a few minutes",Toast.LENGTH_LONG).show();
+                break;
             default:
-                Toast.makeText(getActivity(), "Something broke: " + type, Toast.LENGTH_SHORT).show();
-                FirebaseCrash.report(new Exception("TicketListFragment: Something broke: Task: " + taskId + " Type: " + type));
+                Toast.makeText(getActivity(), "Server returned error: " + type, Toast.LENGTH_SHORT).show();
+                FirebaseCrash.report(new Exception("TLF: Server returned error: Task: " + taskId + " Type: " + type));
         }
     }
 

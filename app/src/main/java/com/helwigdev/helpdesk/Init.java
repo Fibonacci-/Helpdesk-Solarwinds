@@ -43,6 +43,7 @@ public class Init extends AppCompatActivity implements RNInterface {
     SharedPreferences preferences;
     EditText etPassword;
     ProgressDialog pd;
+    Button bLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +113,7 @@ public class Init extends AppCompatActivity implements RNInterface {
         final EditText etServer = (EditText) findViewById(R.id.et_init_server);
         final EditText etUsername = (EditText) findViewById(R.id.et_init_username);
         etPassword = (EditText) findViewById(R.id.et_init_password);
-        final Button bLogin = (Button) findViewById(R.id.b_init_login);
+        bLogin = (Button) findViewById(R.id.b_init_login);
 
         if (preferences.contains(PREF_SERVER)) {
             etServer.setText(preferences.getString(PREF_SERVER, ""));
@@ -136,6 +137,7 @@ public class Init extends AppCompatActivity implements RNInterface {
             @Override
             public void onClick(View v) {
                 //get values for everything
+                bLogin.setEnabled(false);
                 pd.setMessage(getResources().getString(R.string.loading));
                 pd.show();
                 String servername = etServer.getText().toString();
@@ -234,12 +236,13 @@ public class Init extends AppCompatActivity implements RNInterface {
                     editor.apply();
 
                     pd.dismiss();
-
+                    //successful login
                     Intent i = new Intent(this, TabActivity.class);
                     startActivity(i);
                     finish();
 
                 } else if (o.getString("type").equals("Error")) {
+                    bLogin.setEnabled(true);
                     String message = o.getString("message");
                     pd.dismiss();
                     Toast.makeText(this, "Error: server returned message: " + message, Toast.LENGTH_LONG).show();
@@ -247,11 +250,14 @@ public class Init extends AppCompatActivity implements RNInterface {
                 }
             } catch (JSONException e) {
                 pd.dismiss();
+                bLogin.setEnabled(true);
                 e.printStackTrace();
                 Toast.makeText(this, "Server exists, but did not respond correctly. Is the URL correct?", Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, "Error data:" + e.toString(), Toast.LENGTH_LONG).show();
                 //FirebaseCrash.report(new Exception("JSONException: Init: " + e.toString()));
             } catch (Exception e){
+                pd.dismiss();
+                bLogin.setEnabled(true);
                 FirebaseCrash.report(e);
             }
         } else if (taskID == 1) {
@@ -259,7 +265,7 @@ public class Init extends AppCompatActivity implements RNInterface {
             //Toast.makeText(this,"Task ID: " + taskID + " : " + output,Toast.LENGTH_LONG).show();
             Log.d(TAG, output);
             pd.dismiss();
-
+            bLogin.setEnabled(true);
             Intent i = new Intent(this, TabActivity.class);
             startActivity(i);
             finish();
@@ -269,6 +275,7 @@ public class Init extends AppCompatActivity implements RNInterface {
     @Override
     public void authErr(int type, int taskId) {
         pd.dismiss();
+        bLogin.setEnabled(true);
         if (taskId == 0) {
             switch (type) {
                 case 401:
