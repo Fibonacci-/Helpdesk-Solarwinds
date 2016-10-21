@@ -47,7 +47,7 @@ public class SettingsFragment extends PreferenceFragment {
     Preference removeAds;
     Preference restorePurchase;
     Preference configureNotifications;
-    PreferenceCategory devInfo;
+    PreferenceCategory devInfo,functionality;
 
 
     IInAppBillingService mService;
@@ -79,6 +79,7 @@ public class SettingsFragment extends PreferenceFragment {
         removeAds = findPreference("key_pref_action_remove_ads");
         restorePurchase = findPreference("key_pref_action_restore_purchase");
         devInfo = (PreferenceCategory) findPreference("key_pref_info");
+        functionality = (PreferenceCategory)findPreference("pref_key_functionality");
         configureNotifications = findPreference("key_pref_configure_notifications");
 
         Preference prefLegal = findPreference("key_pref_legal");
@@ -97,6 +98,8 @@ public class SettingsFragment extends PreferenceFragment {
                 return true;
             }
         });
+        //hide notifications for now
+        functionality.removePreference(configureNotifications);
 
 
         removeAds.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

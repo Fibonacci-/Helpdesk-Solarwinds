@@ -12,7 +12,7 @@ import com.google.firebase.crash.FirebaseCrash;
 
 public class Utilities {
 
-    private void showAlert(String title, String message, Context context){
+    public static void showAlert(String title, String message, Context context){
         try {
             new AlertDialog.Builder(context)
                     .setTitle(title)
