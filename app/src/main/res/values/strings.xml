@@ -135,4 +135,11 @@ limitations under the License.</string>
     <string name="restore_purchase_detail">Select to restore previous ad removal purchase</string>
     <string name="cancelled">Cancelled</string>
     <string name="already_owned">You\'ve bought this already. Restoring purchase...</string>
+    <string name="notifications">Notifications</string>
+    <string name="pref_notifications_detail">Configure notifications</string>
+    <string name="api_key_instructions"><![CDATA[Your API key can be found in the site desktop interface, under Settings > My Account > API Key.]]></string>
+    <string name="enable_notifications">Validate</string>
+    <string name="user_pass_auth">User/pass auth</string>
+    <string name="enable_userpass_auth">Validate user/pass</string>
+    <string name="user_pass_warning">Are you sure? This is incredibly insecure. It may expose your username and password. It\'s VERY STRONGLY RECOMMENDED to use an API key instead of username and password.\n\n\tPlease don\'t click yes.</string>
 </resources>

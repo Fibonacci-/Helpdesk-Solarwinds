@@ -46,6 +46,7 @@ public class SettingsFragment extends PreferenceFragment {
     protected static final int PURCHASE_ADS_REQUEST_CODE = 1000;
     Preference removeAds;
     Preference restorePurchase;
+    Preference configureNotifications;
     PreferenceCategory devInfo;
 
 
@@ -78,11 +79,21 @@ public class SettingsFragment extends PreferenceFragment {
         removeAds = findPreference("key_pref_action_remove_ads");
         restorePurchase = findPreference("key_pref_action_restore_purchase");
         devInfo = (PreferenceCategory) findPreference("key_pref_info");
+        configureNotifications = findPreference("key_pref_configure_notifications");
+
         Preference prefLegal = findPreference("key_pref_legal");
         prefLegal.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 startActivity(new Intent(getActivity(), AttributionActivity.class));
+                return true;
+            }
+        });
+
+        configureNotifications.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(getActivity(), NotificationActivity.class));
                 return true;
             }
         });
