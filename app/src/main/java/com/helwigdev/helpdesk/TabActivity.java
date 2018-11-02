@@ -1,38 +1,30 @@
 package com.helwigdev.helpdesk;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.view.Window;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.firebase.crash.FirebaseCrash;
 
 public class TabActivity extends AppCompatActivity {
 
@@ -62,18 +54,19 @@ public class TabActivity extends AppCompatActivity {
 
         //set up views
         setContentView(R.layout.activity_tab);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         //init ads
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-5637328886369714~1187638383");
-        mAdView = (AdView) findViewById(R.id.av_tickets_bottom);
+        mAdView = findViewById(R.id.av_tickets_bottom);
         //if ads have not been removed
         if (!preferences.getBoolean(SettingsActivity.PREF_ADS_REMOVED, false)) {
             AdRequest adRequest = new AdRequest.Builder()
                     .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                     .addTestDevice("E498D046420E068963DD7607B804BA3D")
+                    .addTestDevice("960E1155E3858B01540E73FBD53DB405")
                     .build();
 
             mAdView.loadAd(adRequest);

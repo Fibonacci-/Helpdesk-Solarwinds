@@ -1,25 +1,16 @@
 package com.helwigdev.helpdesk;
 
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.internal.framed.Header;
 
 /**
  * Created by helwig on 10/13/2015.
@@ -31,17 +22,17 @@ public class ReadNetwork extends AsyncTask<URL, Void, String> {
     private final String customCookie;
 
 
-    public ReadNetwork(int TaskID, RNInterface rnInterface, boolean useCookie, String cookie) {
+    ReadNetwork(int TaskID, RNInterface rnInterface, boolean useCookie, String cookie) {
         this.taskID = TaskID;
         this.rn = rnInterface;
         this.useCookie = useCookie;
         this.customCookie = cookie;
     }
 
-    int taskID;
-    RNInterface rn;
-    int errType = 200;
-    String cookie = null;
+    private int taskID;
+    private RNInterface rn;
+    private int errType = 200;
+    private String cookie = null;
 
     @Override
     protected String doInBackground(URL... params) {
@@ -76,7 +67,7 @@ public class ReadNetwork extends AsyncTask<URL, Void, String> {
                 //get cookie - because the REST api also requires a consistent cookie
                 //this feature is undocumented.
                 Response response = client.newCall(request).execute();
-                String body = response.body().string();
+                String body = response.body() != null ? response.body().string() : null;
                 List<String> headerList = response.headers("Set-Cookie");
                 for (String header : headerList) {
                     cookie = header;

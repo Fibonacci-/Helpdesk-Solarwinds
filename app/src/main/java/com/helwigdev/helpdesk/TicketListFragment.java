@@ -1,6 +1,5 @@
 package com.helwigdev.helpdesk;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,10 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.firebase.crash.FirebaseCrash;
+import com.crashlytics.android.Crashlytics;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -119,7 +115,7 @@ public class TicketListFragment extends ListFragment implements RNInterface {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    FirebaseCrash.report(new Exception("JSONException: TicketListFragment: " + e.toString()));
+                    Crashlytics.logException(new Exception("JSONException: TicketListFragment: " + e.toString()));
                 }
                 TicketAdapter adapter = new TicketAdapter(TicketSingleton.getInstance().getTickets());
                 setListAdapter(adapter);
@@ -154,7 +150,7 @@ public class TicketListFragment extends ListFragment implements RNInterface {
                 break;
             default:
                 Toast.makeText(getActivity(), "Server returned error: " + type, Toast.LENGTH_SHORT).show();
-                FirebaseCrash.report(new Exception("TLF: Server returned error: Task: " + taskId + " Type: " + type));
+                Crashlytics.logException(new Exception("TLF: Server returned error: Task: " + taskId + " Type: " + type));
         }
     }
 

@@ -24,14 +24,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -137,12 +136,12 @@ public class SettingsFragment extends PreferenceFragment {
                             case 4:
                                 //requested item not available
                                 showAlert("Unavailable","The requested item is not available. Please try again in a few minutes. An error has been logged.");
-                                FirebaseCrash.log("Item unavailable code received (4) during billing attempt.");
+                                Crashlytics.log("Item unavailable code received (4) during billing attempt.");
                                 break;
                             case 5:
                                 //developer error
                                 showAlert("Oops!","Something went wrong during the billing attempt. Please try again in a few minutes. An error has been logged.");
-                                FirebaseCrash.log("Developer error (5) during billing.");
+                                Crashlytics.log("Developer error (5) during billing.");
                                 //log firebase error
                                 break;
                             case 6:
@@ -160,7 +159,7 @@ public class SettingsFragment extends PreferenceFragment {
                             default:
                                 //doesn't happen
                                 Toast.makeText(getActivity(), "How did you get here? Logging error...", Toast.LENGTH_LONG).show();
-                                FirebaseCrash.log("Default case selected during billing. Response code: " + buyIntentBundle.getInt("RESPONSE_CODE"));
+                                Crashlytics.log("Default case selected during billing. Response code: " + buyIntentBundle.getInt("RESPONSE_CODE"));
                         }
 
 
@@ -312,7 +311,7 @@ public class SettingsFragment extends PreferenceFragment {
                     .setIcon(R.drawable.ic_themed_error)
                     .show();
         } catch (Exception e){
-            FirebaseCrash.report(e);
+            Crashlytics.logException(e);
         }
     }
 
@@ -344,7 +343,7 @@ public class SettingsFragment extends PreferenceFragment {
             return hexString.toString();
 
         } catch (NoSuchAlgorithmException e) {
-            FirebaseCrash.report(e);
+            Crashlytics.logException(e);
         }
         return "";
     }

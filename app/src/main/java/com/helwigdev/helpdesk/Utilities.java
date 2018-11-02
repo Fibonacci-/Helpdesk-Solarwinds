@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
-import com.google.firebase.crash.FirebaseCrash;
+import com.crashlytics.android.Crashlytics;
+
 
 /**
  * Created by helwig on 10/20/2016.
@@ -25,7 +26,7 @@ public class Utilities {
                     .setIcon(R.drawable.ic_themed_error)
                     .show();
         } catch (Exception e){
-            FirebaseCrash.report(e);
+            Crashlytics.logException(e);
         }
     }
 

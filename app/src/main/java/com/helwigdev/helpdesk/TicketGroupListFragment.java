@@ -15,7 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.crash.FirebaseCrash;
+import com.crashlytics.android.Crashlytics;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -122,7 +122,7 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    FirebaseCrash.report(new Exception("JSONException: TicketListFragment: " + e.toString()));
+                    Crashlytics.logException(new Exception("JSONException: TicketListFragment: " + e.toString()));
                 }
                 TicketAdapter adapter = new TicketAdapter(TicketGroupSingleton.getInstance().getTickets());
                 setListAdapter(adapter);
@@ -158,7 +158,7 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
                 break;
             default:
                 Toast.makeText(getActivity(), "Server returned error: " + type, Toast.LENGTH_SHORT).show();
-                FirebaseCrash.report(new Exception("TGLF: Server returned error: Task: " + taskId + " Type: " + type));
+                Crashlytics.logException(new Exception("TGLF: Server returned error: Task: " + taskId + " Type: " + type));
         }
     }
 

@@ -1,10 +1,8 @@
 package com.helwigdev.helpdesk;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.crash.FirebaseCrash;
+import com.crashlytics.android.Crashlytics;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -43,13 +41,13 @@ public class NotificationActivity extends AppCompatActivity implements RNInterfa
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         //setup UI
         setContentView(R.layout.activity_notification);
-        etApiKey = (EditText) findViewById(R.id.et_api_key);
-        etUsername = (EditText) findViewById(R.id.et_username);
-        etPassword = (EditText) findViewById(R.id.et_password);
-        bEnableNotifications = (Button) findViewById(R.id.b_enable_notifications);
-        bEnableUPAuth = (Button) findViewById(R.id.b_enable_userpass_auth);
+        etApiKey = findViewById(R.id.et_api_key);
+        etUsername = findViewById(R.id.et_username);
+        etPassword = findViewById(R.id.et_password);
+        bEnableNotifications = findViewById(R.id.b_enable_notifications);
+        bEnableUPAuth = findViewById(R.id.b_enable_userpass_auth);
         vSeparator = findViewById(R.id.v_separator);
-        cbEnableUPAuth = (CheckBox) findViewById(R.id.cb_userpass_auth);
+        cbEnableUPAuth = findViewById(R.id.cb_userpass_auth);
 
         //hide elements if necessary
         Boolean upIsEnabled = preferences.getBoolean(PREF_USERPASS_IS_ENABLED, false);
@@ -200,7 +198,7 @@ public class NotificationActivity extends AppCompatActivity implements RNInterfa
                 break;
             default:
                 Toast.makeText(this, "Server returned error: " + type, Toast.LENGTH_SHORT).show();
-                FirebaseCrash.report(new Exception("TLF: Server returned error: Task: " + taskId + " Type: " + type));
+                Crashlytics.logException(new Exception("TLF: Server returned error: Task: " + taskId + " Type: " + type));
         }
     }
 

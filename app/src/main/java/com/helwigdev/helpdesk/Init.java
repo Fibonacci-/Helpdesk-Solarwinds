@@ -17,10 +17,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,13 +59,14 @@ public class Init extends AppCompatActivity implements RNInterface {
          */
 
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-5637328886369714~1187638383");
-        AdView mAdView = (AdView) findViewById(R.id.av_init_bottom);
+        AdView mAdView = findViewById(R.id.av_init_bottom);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         if(!preferences.getBoolean(SettingsActivity.PREF_ADS_REMOVED, false)) {
             AdRequest adRequest = new AdRequest.Builder()
                     .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                     .addTestDevice("E498D046420E068963DD7607B804BA3D")
+                    .addTestDevice("960E1155E3858B01540E73FBD53DB405")
                     .build();
 
             mAdView.loadAd(adRequest);
@@ -73,7 +74,6 @@ public class Init extends AppCompatActivity implements RNInterface {
             //remove ad
             mAdView.setVisibility(View.GONE);
         }
-        //FirebaseCrash.report(new Exception("Testing crash reporting"));
 
 
         PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
@@ -110,10 +110,10 @@ public class Init extends AppCompatActivity implements RNInterface {
 
         pd = new ProgressDialog(this);
 
-        final EditText etServer = (EditText) findViewById(R.id.et_init_server);
-        final EditText etUsername = (EditText) findViewById(R.id.et_init_username);
-        etPassword = (EditText) findViewById(R.id.et_init_password);
-        bLogin = (Button) findViewById(R.id.b_init_login);
+        final EditText etServer = findViewById(R.id.et_init_server);
+        final EditText etUsername = findViewById(R.id.et_init_username);
+        etPassword = findViewById(R.id.et_init_password);
+        bLogin = findViewById(R.id.b_init_login);
 
         if (preferences.contains(PREF_SERVER)) {
             etServer.setText(preferences.getString(PREF_SERVER, ""));
@@ -183,7 +183,7 @@ public class Init extends AppCompatActivity implements RNInterface {
 
             try {
                 String cookie = preferences.getString(Init.PREF_COOKIE, "");
-                if(cookie != "") {
+                if(!cookie.equals("")) {
                     new ReadNetwork(1, this, true, cookie).execute(new URL(sUrl));
                 }
             } catch (MalformedURLException e) {
@@ -246,7 +246,7 @@ public class Init extends AppCompatActivity implements RNInterface {
                     String message = o.getString("message");
                     pd.dismiss();
                     Toast.makeText(this, "Error: server returned message: " + message, Toast.LENGTH_LONG).show();
-                    FirebaseCrash.report(new Exception("Init: Received error from server:" + message));
+                    Crashlytics.logException(new Exception("Init: Received error from server:" + message));
                 }
             } catch (JSONException e) {
                 pd.dismiss();
@@ -258,7 +258,7 @@ public class Init extends AppCompatActivity implements RNInterface {
             } catch (Exception e){
                 pd.dismiss();
                 bLogin.setEnabled(true);
-                FirebaseCrash.report(e);
+                Crashlytics.logException(e);
             }
         } else if (taskID == 1) {
             //session succeeded
@@ -302,7 +302,7 @@ public class Init extends AppCompatActivity implements RNInterface {
                     break;
                 default:
                     Toast.makeText(this, "Server returned error: " + type, Toast.LENGTH_SHORT).show();
-                    FirebaseCrash.report(new Exception("Init: Server returned error: Task: " + taskId + " Type: " + type));
+                    Crashlytics.logException(new Exception("Init: Server returned error: Task: " + taskId + " Type: " + type));
             }
         } else if (taskId == 1) {
             //session attempt

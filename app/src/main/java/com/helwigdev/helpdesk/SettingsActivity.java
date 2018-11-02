@@ -1,25 +1,18 @@
 package com.helwigdev.helpdesk;
 
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.vending.billing.IInAppBillingService;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -93,7 +86,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
 
-        Bundle b = data.getExtras();
+        //Bundle b = data.getExtras();
         if (resultCode != Activity.RESULT_OK) {
             Log.e("SettingsActivity", "Got result code " + resultCode);
             return;
