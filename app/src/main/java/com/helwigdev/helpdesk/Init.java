@@ -158,6 +158,7 @@ public class Init extends AppCompatActivity implements RNInterface {
                 if (servername.equals("") || username.equals("") || password.equals("")) {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.err_fields_not_full), Toast.LENGTH_LONG).show();
                     pd.dismiss();
+                    bLogin.setEnabled(true);
                     return;
                 }
 

@@ -30,7 +30,7 @@ public class TicketViewActivity extends SingleFragmentActivity {
 
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-5637328886369714~1187638383");
 
-        AdView mAdView = (AdView) findViewById(R.id.av_ticket_view_bottom);
+        AdView mAdView = findViewById(R.id.av_ticket_view_bottom);
         if(!preferences.getBoolean(SettingsActivity.PREF_ADS_REMOVED, false)) {
             AdRequest adRequest = new AdRequest.Builder()
                     .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
