@@ -3,6 +3,8 @@ package com.helwigdev.helpdesk;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -80,6 +82,9 @@ public class ReadNetwork extends AsyncTask<URL, Void, String> {
                 return body;
             } catch (IOException e) {
                 e.printStackTrace();
+                Crashlytics.logException(e);
+                errType = 0;
+                return "Network error: " + e.getMessage();
             }
 
         }
@@ -94,7 +99,7 @@ public class ReadNetwork extends AsyncTask<URL, Void, String> {
         //detect failure conditions
         if (s.equals("error") || s.equals("Authentication Required.") || errType < 199 || errType > 300) {
             Log.d(TAG, "Caught response error: data: " + s + " :: response code: " + errType);
-            rn.authErr(errType, taskID);
+            rn.authErr(errType, taskID, s);
         }
         else {
             rn.processResult(s, taskID);

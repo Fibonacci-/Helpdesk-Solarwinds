@@ -61,6 +61,9 @@ public class TicketListFragment extends ListFragment implements RNInterface {
     }
 
     private void initGetTickets(){
+        if(preferences == null){
+            preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        }
         String sUrl = "http://" +
                 preferences.getString(Init.PREF_SERVER, "") +
                 "/helpdesk/WebObjects/Helpdesk.woa/ra/Tickets/mine" +
