@@ -17,7 +17,3 @@ Otherwise, you can always clone this repository via IntelliJ and build an APK ma
 ## Contributing
 
 Always welcome.
-
-## License
-
-CC BY-SA
