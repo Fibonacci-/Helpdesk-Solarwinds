@@ -29,7 +29,6 @@
                     android:id="@+id/tv_full_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="123456"
                     android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                 <TextView
@@ -39,7 +38,6 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
-                    android:text="Client name"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <TextView
@@ -49,7 +47,6 @@
                     android:layout_alignEnd="@+id/tv_full_client"
                     android:layout_alignRight="@+id/tv_full_client"
                     android:layout_below="@+id/tv_full_client"
-                    android:text="Pretty updated"
                     android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                 <TextView
@@ -59,7 +56,6 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/tv_full_pretty_updated"
-                    android:text="Updated"
                     android:textAppearance="?android:attr/textAppearanceSmall"/>
 
             </RelativeLayout>
@@ -85,7 +81,6 @@
                     android:id="@+id/tv_full_subj"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Subject"
                     android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                 <TextView
@@ -95,7 +90,6 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/tv_full_subj"
-                    android:text="Created By"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     />
 
@@ -117,7 +111,6 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/v_line_full"
-                    android:text="Ticket details"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 

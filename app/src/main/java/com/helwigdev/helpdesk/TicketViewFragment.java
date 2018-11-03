@@ -216,15 +216,23 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                     //mTicket.updateTicketLong(o);
                     //need: created by, full subj, full detail, notes
                     tvCreatedBy.setVisibility(View.VISIBLE);
-                    String s = "Created by: " + o.getJSONObject("clientReporter").getString("email");
-                    tvCreatedBy.setText(s);
+                    try{
+                        String s = "Created by: " + o.getJSONObject("clientReporter").getString("email");
+                        tvCreatedBy.setText(s);
+                    } catch (JSONException e){
+                        tvCreatedBy.setText(getResources().getString(R.string.no_creation_record));
+                    }
                     tvSubject.setText(o.getString("subject"));
                     tvDetails.setText(Html.fromHtml(o.getString("detail")));
                     ticketType = o.getString("type");
 
                     tvId.setText(String.valueOf(ticketId));
-                    String stvClient = "Client: " + o.getJSONObject("clientReporter").getString("firstName") + " " + o.getJSONObject("clientReporter").getString("lastName");
-                    tvClient.setText(stvClient);
+                    try {
+                        String stvClient = "Client: " + o.getJSONObject("clientReporter").getString("firstName") + " " + o.getJSONObject("clientReporter").getString("lastName");
+                        tvClient.setText(stvClient);
+                    } catch (JSONException e){
+                        tvClient.setText(R.string.no_client);
+                    }
                     tvPrettyUpdated.setText(prettyLastUpdated);
                     String sUpdated = o.getString("lastUpdated");
                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'", Locale.ENGLISH);

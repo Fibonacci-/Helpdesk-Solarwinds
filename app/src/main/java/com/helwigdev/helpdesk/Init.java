@@ -147,6 +147,9 @@ public class Init extends AppCompatActivity implements RNInterface {
                 pd.show();
                 String servername = etServer.getText().toString();
                 servername = servername.trim();//why oh why
+                servername = servername.replace("http://","");
+                servername = servername.replace("https://","");
+                etServer.setText(servername);
                 String username = etUsername.getText().toString();
                 username = username.trim();
                 String password = etPassword.getText().toString();

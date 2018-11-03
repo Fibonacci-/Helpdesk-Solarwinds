@@ -142,4 +142,6 @@ limitations under the License.</string>
     <string name="user_pass_auth">User/pass auth</string>
     <string name="enable_userpass_auth">Validate user/pass</string>
     <string name="user_pass_warning">Are you sure? This is incredibly insecure. It may expose your username and password. It\'s VERY STRONGLY RECOMMENDED to use an API key instead of username and password.\n\n\tPlease don\'t click yes.</string>
+    <string name="no_client">No client</string>
+    <string name="no_creation_record">No creation record</string>
 </resources>
