@@ -366,7 +366,7 @@ public class TicketViewFragment extends Fragment implements RNInterface {
     }
 
     @Override
-    public void authErr(int type, int taskId) {
+    public void authErr(int type, int taskId, String message) {
         switch (taskId) {
             case TASK_FULL_TICKET:
                 switch (type) {

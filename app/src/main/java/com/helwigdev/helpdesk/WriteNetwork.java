@@ -124,7 +124,7 @@ public class WriteNetwork extends AsyncTask<URL, Void, String>{
         if(cookie != null) rn.setCookie(cookie);
         if (s.equals("error") || s.equals("Authentication Required.") || errType < 199 || errType > 300) {
             Log.d(TAG, "Caught response error: data: " + s + " :: response code: " + errType);
-            rn.authErr(errType, taskID);
+            rn.authErr(errType, taskID, s);
         } else {
             rn.processResult(s, taskID);
         }

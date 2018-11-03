@@ -30,4 +30,12 @@ public class Utilities {
         }
     }
 
+    public static String getSubstring(String message, int endIndex){
+        if(message.length() < endIndex){
+            return message;
+        } else {
+            return message.substring(0,endIndex);
+        }
+    }
+
 }

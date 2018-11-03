@@ -133,7 +133,7 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
     }
 
     @Override
-    public void authErr(int type, int taskId) {
+    public void authErr(int type, int taskId, String message) {
         if (this.isDetached()) return;
         dismissActivityPd();
         switch (type) {

@@ -21,6 +21,7 @@ import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +46,8 @@ public class Init extends AppCompatActivity implements RNInterface {
     ProgressDialog pd;
     Button bLogin;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,8 @@ public class Init extends AppCompatActivity implements RNInterface {
         implement searching
         add notifications
          */
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-5637328886369714~1187638383");
         AdView mAdView = findViewById(R.id.av_init_bottom);
@@ -237,6 +242,10 @@ public class Init extends AppCompatActivity implements RNInterface {
 
                     pd.dismiss();
                     //successful login
+                    Bundle params = new Bundle();
+                    params.putBoolean("success", true);
+                    mFirebaseAnalytics.logEvent("login", params);
+
                     Intent i = new Intent(this, TabActivity.class);
                     startActivity(i);
                     finish();
@@ -273,10 +282,17 @@ public class Init extends AppCompatActivity implements RNInterface {
     }
 
     @Override
-    public void authErr(int type, int taskId) {
+    public void authErr(int type, int taskId, String message) {
         pd.dismiss();
         bLogin.setEnabled(true);
         if (taskId == 0) {
+            //manual login attempt
+            Bundle params = new Bundle();
+            params.putString("message", Utilities.getSubstring(message,100));
+            params.putInt("returncode",type);
+            mFirebaseAnalytics.logEvent("login_fail", params);
+            Log.d("init","send firebase log");
+
             switch (type) {
                 case 401:
                     //deauth
@@ -288,7 +304,7 @@ public class Init extends AppCompatActivity implements RNInterface {
                     break;
                 case 403:
                     //not allowed
-                    Toast.makeText(this, "You are not allowed to do that.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Server returned 403 Not Allowed", Toast.LENGTH_SHORT).show();
                     break;
                 case 404:
                     //not allowed
@@ -299,6 +315,9 @@ public class Init extends AppCompatActivity implements RNInterface {
                     break;
                 case 503:
                     Toast.makeText(this,"503 service unavailable. Try again in a few minutes",Toast.LENGTH_LONG).show();
+                    break;
+                case 0:
+                    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
                     break;
                 default:
                     Toast.makeText(this, "Server returned error: " + type, Toast.LENGTH_SHORT).show();

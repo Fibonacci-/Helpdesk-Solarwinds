@@ -176,7 +176,7 @@ public class NotificationActivity extends AppCompatActivity implements RNInterfa
     }
 
     @Override
-    public void authErr(int type, int taskId) {
+    public void authErr(int type, int taskId, String message) {
         switch (type) {
             case 401:
                 //bad login

@@ -126,7 +126,7 @@ public class TicketListFragment extends ListFragment implements RNInterface {
     }
 
     @Override
-    public void authErr(int type, int taskId) {
+    public void authErr(int type, int taskId, String message) {
         if (this.isDetached()) return;
         dismissActivityPd();
         switch (type) {
@@ -177,11 +177,11 @@ public class TicketListFragment extends ListFragment implements RNInterface {
 
             Ticket t = getItem(position);
 
-            TextView tvId = (TextView) convertView.findViewById(R.id.tv_tick_id);
-            TextView tvClient = (TextView) convertView.findViewById(R.id.tv_tick_client);
-            TextView tvUpdated = (TextView) convertView.findViewById(R.id.tv_tick_last_updated);
-            TextView tvSubj = (TextView) convertView.findViewById(R.id.tv_tick_subj);
-            TextView tvDetail = (TextView) convertView.findViewById(R.id.tv_tick_det);
+            TextView tvId = convertView.findViewById(R.id.tv_tick_id);
+            TextView tvClient = convertView.findViewById(R.id.tv_tick_client);
+            TextView tvUpdated = convertView.findViewById(R.id.tv_tick_last_updated);
+            TextView tvSubj = convertView.findViewById(R.id.tv_tick_subj);
+            TextView tvDetail = convertView.findViewById(R.id.tv_tick_det);
 
             String tId = String.valueOf(t.getTicketId());
             tvId.setText(tId);

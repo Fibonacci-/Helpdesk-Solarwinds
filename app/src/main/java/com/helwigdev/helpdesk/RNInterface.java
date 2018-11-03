@@ -6,7 +6,7 @@ package com.helwigdev.helpdesk;
 public interface RNInterface {
     //ReadNetwork Interface
     void processResult(String output, int taskID);
-    void authErr(int type, int taskId);
+    void authErr(int type, int taskId, String message);
     void setCookie(String cookie);
 
 }
