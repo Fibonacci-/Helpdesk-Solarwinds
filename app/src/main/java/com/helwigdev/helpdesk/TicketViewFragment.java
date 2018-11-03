@@ -78,18 +78,18 @@ public class TicketViewFragment extends Fragment implements RNInterface {
         View v = inflater.inflate(R.layout.full_ticket, container, false);
 
 
-        tvId = (TextView) v.findViewById(R.id.tv_full_id);
-        tvClient = (TextView) v.findViewById(R.id.tv_full_client);
-        tvPrettyUpdated = (TextView) v.findViewById(R.id.tv_full_pretty_updated);
-        tvUpdated = (TextView) v.findViewById(R.id.tv_full_updated);
-        tvSubject = (TextView) v.findViewById(R.id.tv_full_subj);
-        tvCreatedBy = (TextView) v.findViewById(R.id.tv_full_created_by);
-        tvDetails = (TextView) v.findViewById(R.id.tv_full_details);
-        bNewNote = (Button) v.findViewById(R.id.b_full_new_note);
-        pbNoteLoader = (ProgressBar) v.findViewById(R.id.pb_full_note_loader);
-        llNotes = (LinearLayout) v.findViewById(R.id.ll_full_notes);
-        svTicketScroll = (ScrollView) v.findViewById(R.id.sv_ticket_scrollview);
-        rlTicketRelative = (RelativeLayout) v.findViewById(R.id.rl_ticket_relative);
+        tvId = v.findViewById(R.id.tv_full_id);
+        tvClient = v.findViewById(R.id.tv_full_client);
+        tvPrettyUpdated = v.findViewById(R.id.tv_full_pretty_updated);
+        tvUpdated = v.findViewById(R.id.tv_full_updated);
+        tvSubject = v.findViewById(R.id.tv_full_subj);
+        tvCreatedBy = v.findViewById(R.id.tv_full_created_by);
+        tvDetails = v.findViewById(R.id.tv_full_details);
+        bNewNote = v.findViewById(R.id.b_full_new_note);
+        pbNoteLoader = v.findViewById(R.id.pb_full_note_loader);
+        llNotes = v.findViewById(R.id.ll_full_notes);
+        svTicketScroll = v.findViewById(R.id.sv_ticket_scrollview);
+        rlTicketRelative = v.findViewById(R.id.rl_ticket_relative);
 
         bNewNote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,12 +104,12 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                EditText etDetails = (EditText) vDia.findViewById(R.id.et_dia_note);
-                                EditText etTime = (EditText) vDia.findViewById(R.id.et_dia_time);
+                                EditText etDetails = vDia.findViewById(R.id.et_dia_note);
+                                EditText etTime = vDia.findViewById(R.id.et_dia_time);
                                 CheckBox cbVisible, cbEmailTech, cbEmailClient;
-                                cbVisible = (CheckBox) vDia.findViewById(R.id.cb_is_visible);
-                                cbEmailTech = (CheckBox) vDia.findViewById(R.id.cb_dia_email_tech);
-                                cbEmailClient = (CheckBox) vDia.findViewById(R.id.cb_dia_email_client);
+                                cbVisible = vDia.findViewById(R.id.cb_is_visible);
+                                cbEmailTech = vDia.findViewById(R.id.cb_dia_email_tech);
+                                cbEmailClient = vDia.findViewById(R.id.cb_dia_email_client);
 
 
 
@@ -297,7 +297,7 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                     if (notes.size() == 0) {
                         LayoutInflater inflater = LayoutInflater.from(getActivity());
                         View v = inflater.inflate(R.layout.part_note, llNotes, true);
-                        TextView tvNote = (TextView) v.findViewById(R.id.tv_note_text);
+                        TextView tvNote = v.findViewById(R.id.tv_note_text);
                         tvNote.setText(getResources().getString(R.string.no_notes));
 
                     }
@@ -437,8 +437,8 @@ public class TicketViewFragment extends Fragment implements RNInterface {
             }
             TicketNote note = getItem(position);
 
-            TextView tvNoteText = (TextView) convertView.findViewById(R.id.tv_note_text);
-            TextView tvNotePrettyUpdated = (TextView) convertView.findViewById(R.id.tv_note_pretty_updated);
+            TextView tvNoteText = convertView.findViewById(R.id.tv_note_text);
+            TextView tvNotePrettyUpdated = convertView.findViewById(R.id.tv_note_pretty_updated);
             tvNoteText.setText(Html.fromHtml(note.getNoteText()));
             tvNotePrettyUpdated.setText(Html.fromHtml(note.getPrettyUpdated()));
 
