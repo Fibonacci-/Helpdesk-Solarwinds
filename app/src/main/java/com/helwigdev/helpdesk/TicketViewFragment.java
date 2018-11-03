@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -252,30 +251,7 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                     }
 
                     listView = new ListView(getActivity());
-                    listView.setOnTouchListener(new ListView.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            int action = event.getAction();
-                            switch (action) {
-                                case MotionEvent.ACTION_DOWN:
-                                    // Disallow ScrollView to intercept touch events.
-                                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                                    break;
 
-                                case MotionEvent.ACTION_UP:
-
-                                    // Allow ScrollView to intercept touch events.
-
-                                    v.getParent().requestDisallowInterceptTouchEvent(false);
-
-                                    break;
-                            }
-
-                            // Handle ListView touch events.
-                            v.onTouchEvent(event);
-                            return true;
-                        }
-                    });
 
                     ArrayList<TicketNote> notes = new ArrayList<>();
                     JSONArray jsonNotes = o.getJSONArray("notes");
@@ -368,7 +344,7 @@ public class TicketViewFragment extends Fragment implements RNInterface {
         }
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1)) + 70;
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
