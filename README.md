@@ -12,7 +12,9 @@ You can install the app on Google Play at this link:
 
 https://play.google.com/store/apps/details?id=com.helwigdev.helpdesk
 
-Otherwise, you can always clone this repository via IntelliJ and build an APK manually. 
+I try to release any new bugfixes or features within a week of the relevant commit. This depends on how much time I have to work on the project and whether a large feature is in progress.
+
+Otherwise, you can always clone this repository via Android Studio and build an APK manually. 
 
 ## Contributing
 
