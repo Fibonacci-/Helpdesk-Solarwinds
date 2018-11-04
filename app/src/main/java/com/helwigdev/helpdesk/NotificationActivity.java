@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.helwigdev.helpdesk.model.AuthModel;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -106,13 +107,13 @@ public class NotificationActivity extends AppCompatActivity implements RNInterfa
                 }
 
                 String sUrl = "http://" +
-                        preferences.getString(Init.PREF_SERVER, "") +
+                        preferences.getString(AuthModel.PREF_SERVER, "") +
                         "/helpdesk/WebObjects/Helpdesk.woa/ra/Techs/currentTech" +
                         "?apiKey=" +
                         apiKey;
 
                 try {
-                    String cookie = preferences.getString(Init.PREF_COOKIE, "");
+                    String cookie = preferences.getString(AuthModel.PREF_COOKIE, "");
                     new ReadNetwork(task_api_validate, NotificationActivity.this, true, cookie).execute(new URL(sUrl));
 
                 } catch (MalformedURLException e) {
@@ -135,7 +136,7 @@ public class NotificationActivity extends AppCompatActivity implements RNInterfa
                 }
 
                 String sUrl = "http://" +
-                        preferences.getString(Init.PREF_SERVER, "") +
+                        preferences.getString(AuthModel.PREF_SERVER, "") +
                         "/helpdesk/WebObjects/Helpdesk.woa/ra/Techs/currentTech" +
                         "?username=" +
                         username +
@@ -143,7 +144,7 @@ public class NotificationActivity extends AppCompatActivity implements RNInterfa
                         pass;
 
                 try {
-                    String cookie = preferences.getString(Init.PREF_COOKIE, "");
+                    String cookie = preferences.getString(AuthModel.PREF_COOKIE, "");
                     new ReadNetwork(task_up_validate, NotificationActivity.this, false, cookie).execute(new URL(sUrl));
                 } catch (MalformedURLException e) {
                     e.printStackTrace();

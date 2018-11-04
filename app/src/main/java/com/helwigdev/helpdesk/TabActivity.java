@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -168,9 +170,15 @@ public class TabActivity extends AppCompatActivity {
                 //send email
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 Uri data = Uri.parse("mailto:helwigdev@gmail.com?subject=Feedback for Web Help Desk app");
-                intent.setData(data);
-                startActivity(intent);
-                return true;
+                try {
+                    intent.setData(data);
+                    startActivity(intent);
+                    return true;
+                } catch (Exception e){
+                    Log.e("Feedback error ","something went wrong",e);
+                    Crashlytics.logException(e);
+                    return false;
+                }
             case R.id.menu_tab_refresh:
                 //begin refresh cascade
                 refreshAndNotify();

@@ -129,6 +129,9 @@ class AuthController(private val context: Context, val parent: Login,
                     server.requestFocus()
                 }
                 else -> {
+                    val t = Throwable(result.result)
+                    Log.e("AuthController","Unhandled net error",t)
+                    Crashlytics.logException(t)
                     server.error = result.result.removePrefix("java.net.UnknownHostException: ")
                     server.requestFocus()
                 }

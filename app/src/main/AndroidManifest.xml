@@ -15,14 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-5637328886369714~1187638383" />
 
-        <activity android:name=".Init">
-
-        </activity>
         <activity android:name=".TicketViewActivity" />
         <activity android:name=".AttributionActivity" />
         <activity android:name=".SettingsActivity" />

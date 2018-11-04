@@ -102,7 +102,11 @@ Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
-limitations under the License.</string>
+limitations under the License.
+
+
+        \n\nKittinunf\'s Fuel library\n\nunder the MIT license
+    </string>
     <string name="title_activity_nav_drawer">NavDrawerActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -159,5 +163,5 @@ limitations under the License.</string>
     </string>
     <string name="use_ssl">Use SSL/TLS</string>
     <string name="login_invalid_no_sessionkey">Invalid response from server: no sessionKey object</string>
-    <string name="logging_in">Logging in...</string>
+    <string name="logging_in">Logging in…</string>
 </resources>

@@ -44,6 +44,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_username"
         tools:ignore="UnusedAttribute"
+        android:imeOptions="actionGo"
         android:autofillHints="username" />
 
     <EditText

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.helwigdev.helpdesk.model.AuthModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,14 +66,14 @@ public class TicketListFragment extends ListFragment implements RNInterface {
             preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         }
         String sUrl = "http://" +
-                preferences.getString(Init.PREF_SERVER, "") +
+                preferences.getString(AuthModel.PREF_SERVER, "") +
                 "/helpdesk/WebObjects/Helpdesk.woa/ra/Tickets/mine" +
                 "?page=1&limit=500" +
                 "&sessionKey=" +
-                preferences.getString(Init.PREF_SESSION_KEY, "");
+                preferences.getString(AuthModel.PREF_SESSION_KEY, "");
 
         try {
-            String cookie = preferences.getString(Init.PREF_COOKIE, "");
+            String cookie = preferences.getString(AuthModel.PREF_COOKIE, "");
             new ReadNetwork(0, this, true, cookie).execute(new URL(sUrl));
         } catch (MalformedURLException e) {
             e.printStackTrace();

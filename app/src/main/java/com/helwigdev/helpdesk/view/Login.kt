@@ -3,10 +3,13 @@ package com.helwigdev.helpdesk.view
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.inputmethod.EditorInfo
 import com.helwigdev.helpdesk.R
 import com.helwigdev.helpdesk.TabActivity
 import com.helwigdev.helpdesk.controller.AuthController
 import kotlinx.android.synthetic.main.a_login.*
+
+
 
 class Login : AppCompatActivity() {
 
@@ -17,6 +20,8 @@ class Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.a_login)
+
+        this.title = getString(R.string.login)
 
         //initialize controller
         auth = AuthController(
@@ -32,6 +37,16 @@ class Login : AppCompatActivity() {
         //check session key
         et_password.hint = "Validating session..."
         auth.checkKey()
+
+        et_password.setOnEditorActionListener { v, actionId, event ->
+            var handled = false
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                setLoading(true)
+                auth.attemptLogin()
+                handled = true
+            }
+            handled
+        }
 
         //the login button
         b_login.setOnClickListener {

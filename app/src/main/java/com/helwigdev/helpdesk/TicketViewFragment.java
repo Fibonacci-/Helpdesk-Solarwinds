@@ -25,6 +25,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.helwigdev.helpdesk.model.AuthModel;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -132,12 +134,12 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                                     o.put("emailTech", cbEmailTech.isChecked());
 
                                     String sUrl = "http://" +
-                                            preferences.getString(Init.PREF_SERVER, "") +
+                                            preferences.getString(AuthModel.PREF_SERVER, "") +
                                             "/helpdesk/WebObjects/Helpdesk.woa/ra/TechNotes?sessionKey=" +
-                                            preferences.getString(Init.PREF_SESSION_KEY, "");
+                                            preferences.getString(AuthModel.PREF_SESSION_KEY, "");
 
                                     new WriteNetwork(TASK_NEW_NOTE, o.toString(), netInterface,
-                                            true, preferences.getString(Init.PREF_COOKIE, "")).execute(new URL(sUrl));
+                                            true, preferences.getString(AuthModel.PREF_COOKIE, "")).execute(new URL(sUrl));
 
                                 } catch (JSONException | MalformedURLException e) {
                                     e.printStackTrace();
@@ -190,14 +192,14 @@ public class TicketViewFragment extends Fragment implements RNInterface {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         String sUrl = "http://" +
-                preferences.getString(Init.PREF_SERVER, "") +
+                preferences.getString(AuthModel.PREF_SERVER, "") +
                 "/helpdesk/WebObjects/Helpdesk.woa/ra/Tickets/" +
                 ticketId +
                 "?sessionKey=" +
-                preferences.getString(Init.PREF_SESSION_KEY, "");
+                preferences.getString(AuthModel.PREF_SESSION_KEY, "");
 
         try {
-            new ReadNetwork(TASK_FULL_TICKET, this, true, preferences.getString(Init.PREF_COOKIE, "")).execute(new URL(sUrl));
+            new ReadNetwork(TASK_FULL_TICKET, this, true, preferences.getString(AuthModel.PREF_COOKIE, "")).execute(new URL(sUrl));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
