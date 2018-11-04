@@ -3,6 +3,7 @@ package com.helwigdev.helpdesk;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ListFragment;
 import android.text.Html;
@@ -53,7 +54,7 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
 
         getActivity().setTitle(R.string.app_name);
         //get list of tickets
-        preferences = getContext().getSharedPreferences(getContext().getApplicationInfo().packageName,0);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
 
         initGetTickets();

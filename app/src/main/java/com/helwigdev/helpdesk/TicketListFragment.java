@@ -3,6 +3,7 @@ package com.helwigdev.helpdesk;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.text.Html;
 import android.util.Log;
@@ -52,7 +53,7 @@ public class TicketListFragment extends ListFragment implements RNInterface {
 
         getActivity().setTitle(R.string.app_name);
         //get list of tickets
-        preferences = getContext().getSharedPreferences(getContext().getApplicationInfo().packageName,0);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         initGetTickets();
         setRetainInstance(false);
@@ -61,7 +62,7 @@ public class TicketListFragment extends ListFragment implements RNInterface {
 
     private void initGetTickets(){
         if(preferences == null){
-            preferences = getContext().getSharedPreferences(getContext().getApplicationInfo().packageName,0);
+            preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         }
         String sUrl = "http://" +
                 preferences.getString(Init.PREF_SERVER, "") +

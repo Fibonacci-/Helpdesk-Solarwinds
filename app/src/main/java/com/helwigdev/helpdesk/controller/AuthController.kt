@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.widget.CheckBox
@@ -20,7 +21,7 @@ class AuthController(private val context: Context, val parent: Login,
                      private val server: EditText, val username: EditText,
                      val password: EditText, val use_ssl: CheckBox) {
 
-    private val prefs: SharedPreferences = context.getSharedPreferences(context.applicationInfo.packageName,0)
+    private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
 
     val model = AuthModel(context,this)
@@ -74,15 +75,16 @@ class AuthController(private val context: Context, val parent: Login,
                 server.text.toString().contains("https://", true) ||
                 server.text.toString().contains("/", true)){
             server.error = "Only type the FQDN of the server: don't include http or anything after the TLD"
+            server.requestFocus()
             parent.setLoading(false)
             return
         }
         //make sure none of them are empty
         for(view in views){
-            view.error = null
             view.setText(view.text.trim())
             if(view.text.toString() == ""){
                 view.error = "Cannot be empty"
+                view.requestFocus()
                 parent.setLoading(false)
                 return
             }
@@ -116,11 +118,20 @@ class AuthController(private val context: Context, val parent: Login,
     fun sessionKeyResult(result: NetResult){
         if(result.error){
             parent.setLoading(false)
-            if(result.responseCode == 401){
-                password.error = "Username or password incorrect: 401 Unauthorized"
-                password.setText("")
-            } else {
-                server.error = result.result.removePrefix("java.net.UnknownHostException: ")
+            when {
+                result.responseCode == 401 -> {
+                    password.error = "Username or password incorrect: 401 Unauthorized"
+                    password.setText("")
+                    password.requestFocus()
+                }
+                result.responseCode == 404 -> {
+                    server.error = "Can't find a compatible API: 404 Not Found"
+                    server.requestFocus()
+                }
+                else -> {
+                    server.error = result.result.removePrefix("java.net.UnknownHostException: ")
+                    server.requestFocus()
+                }
             }
         } else {
             //handle login

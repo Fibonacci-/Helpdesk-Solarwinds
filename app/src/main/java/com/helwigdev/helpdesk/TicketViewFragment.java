@@ -3,6 +3,7 @@ package com.helwigdev.helpdesk;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -70,7 +71,7 @@ public class TicketViewFragment extends Fragment implements RNInterface {
             Toast.makeText(getActivity(), "Internal error", Toast.LENGTH_SHORT).show();
             getActivity().finish();
         }
-        preferences = getContext().getSharedPreferences(getContext().getApplicationInfo().packageName,0);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         //mTicket = TicketSingleton.getInstance().getTicketById(ticketId);
 
         View v = inflater.inflate(R.layout.full_ticket, container, false);
@@ -186,7 +187,7 @@ public class TicketViewFragment extends Fragment implements RNInterface {
         //        > /ra/Tickets/1\
         //> ?apiKey=OdWPct19cIZbGIbVJkarpbrIvvx561tErxx87l3l"
 
-        SharedPreferences preferences = getContext().getSharedPreferences(getContext().getApplicationInfo().packageName,0);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         String sUrl = "http://" +
                 preferences.getString(Init.PREF_SERVER, "") +

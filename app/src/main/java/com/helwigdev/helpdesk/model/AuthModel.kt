@@ -2,12 +2,13 @@ package com.helwigdev.helpdesk.model
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.httpGet
 import com.helwigdev.helpdesk.controller.AuthController
 
 class AuthModel(context: Context, private val parent: AuthController){
-    private val prefs: SharedPreferences = context.getSharedPreferences(context.applicationInfo.packageName,0)
+    private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
 
     /*
