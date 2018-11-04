@@ -34,6 +34,7 @@ class Login : AppCompatActivity() {
         //startup functions
         auth.disclaimer()
         auth.initETVals()
+        
         //check session key
         et_password.hint = "Validating session..."
         auth.checkKey()
