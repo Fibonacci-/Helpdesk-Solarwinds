@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -56,7 +55,7 @@ public class TabActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tab);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = this.getSharedPreferences(this.getApplicationInfo().packageName,0);
 
         //init ads
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-5637328886369714~1187638383");
@@ -108,7 +107,7 @@ public class TabActivity extends AppCompatActivity {
 
         //re-set up preferences if the object has been lost
         if (preferences == null) {
-            preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            preferences = this.getSharedPreferences(this.getApplicationInfo().packageName,0);
         }
 
         //remove ads if necessary
