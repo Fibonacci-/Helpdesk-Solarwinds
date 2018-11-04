@@ -11,11 +11,14 @@ import kotlinx.android.synthetic.main.a_login.*
 class Login : AppCompatActivity() {
 
     private lateinit var auth: AuthController
+    //todo ads
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.a_login)
+
+        //initialize controller
         auth = AuthController(
                 applicationContext,
                 this,
@@ -23,11 +26,14 @@ class Login : AppCompatActivity() {
                 et_username,
                 et_password,
                 cb_use_ssl)
+        //startup functions
         auth.disclaimer()
         auth.initETVals()
-        auth.checkKey()
+        //check session key
         et_password.hint = "Validating session..."
+        auth.checkKey()
 
+        //the login button
         b_login.setOnClickListener {
             setLoading(true)
             auth.attemptLogin()
@@ -46,7 +52,7 @@ class Login : AppCompatActivity() {
         }
     }
 
-
+    //called after session key has been verified
     fun login(){
         setLoading(true)
         b_login.text = getString(R.string.logging_in)
@@ -55,6 +61,7 @@ class Login : AppCompatActivity() {
         finish()
     }
 
+    //reset view to default
     fun sessionInvalid(){
         et_password.hint = resources.getString(R.string.password)
     }

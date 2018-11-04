@@ -10,6 +10,12 @@ class AuthModel(context: Context, private val parent: AuthController){
     private val prefs: SharedPreferences = context.getSharedPreferences(context.applicationInfo.packageName,0)
 
 
+    /*
+    *********
+    DATA GETS
+    *********
+     */
+
     fun getSessionKey(password:String){
 
         val prefix = if (prefs.getBoolean(PREF_USE_SSL, true)) "https://" else "http://"

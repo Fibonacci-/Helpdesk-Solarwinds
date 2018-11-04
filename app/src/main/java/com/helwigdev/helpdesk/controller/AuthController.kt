@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
+import com.crashlytics.android.Crashlytics
 import com.helwigdev.helpdesk.R
 import com.helwigdev.helpdesk.model.AuthModel
 import com.helwigdev.helpdesk.model.NetResult
@@ -132,6 +133,9 @@ class AuthController(private val context: Context, val parent: Login,
                         .commit()
                 parent.login()
             } else {
+                val t = Throwable("Expected JSON with sessionKey object but received: " + result.result)
+                Crashlytics.logException(t)
+                Log.e("AuthController","Server response did not return correct JSON",t)
                 server.setText(context.getString(R.string.login_invalid_no_sessionkey))
                 parent.setLoading(false)
             }
@@ -140,7 +144,14 @@ class AuthController(private val context: Context, val parent: Login,
 
     fun checkKeyResult(result:NetResult){
         Log.d("AuthController","Session status code is " + result.responseCode)
+
         if(result.error){
+            if(result.responseCode != 401){
+                val t = Throwable("AuthController received unexpected response from model: code: " +
+                        result.responseCode + " | data: " + result.result + " | error: " + result.error.toString())
+                Log.e("AuthController","Unexpected response from model",t)
+                Crashlytics.logException(t)
+            }
             parent.sessionInvalid()
         } else {
             parent.login()
