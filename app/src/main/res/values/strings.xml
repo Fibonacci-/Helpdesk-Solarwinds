@@ -159,4 +159,5 @@ limitations under the License.</string>
     </string>
     <string name="use_ssl">Use SSL/TLS</string>
     <string name="login_invalid_no_sessionkey">Invalid response from server: no sessionKey object</string>
+    <string name="logging_in">Logging in...</string>
 </resources>

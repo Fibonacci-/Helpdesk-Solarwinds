@@ -25,6 +25,8 @@ class Login : AppCompatActivity() {
                 cb_use_ssl)
         auth.disclaimer()
         auth.initETVals()
+        auth.checkKey()
+        et_password.hint = "Validating session..."
 
         b_login.setOnClickListener {
             setLoading(true)
@@ -46,9 +48,15 @@ class Login : AppCompatActivity() {
 
 
     fun login(){
+        setLoading(true)
+        b_login.text = getString(R.string.logging_in)
         val i = Intent(this, TabActivity::class.java)
         startActivity(i)
         finish()
+    }
+
+    fun sessionInvalid(){
+        et_password.hint = resources.getString(R.string.password)
     }
 
 

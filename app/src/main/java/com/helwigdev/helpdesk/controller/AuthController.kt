@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.support.v7.app.AlertDialog
+import android.util.Log
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
@@ -22,6 +23,48 @@ class AuthController(private val context: Context, val parent: Login,
 
 
     val model = AuthModel(context,this)
+
+    /*
+    ************************
+    INITIALIZATION FUNCTIONS
+    ************************
+     */
+
+
+    fun initETVals(){
+        server.setText(prefs.getString(AuthModel.PREF_SERVER, ""))
+        username.setText(prefs.getString(AuthModel.PREF_USERNAME, ""))
+    }
+
+    fun disclaimer(){
+        //show disclaimer
+        if (!prefs.contains(AuthModel.PREF_DISCLAIMER)) {
+            val dialogClickListener = DialogInterface.OnClickListener { _, which ->
+                when (which) {
+                    DialogInterface.BUTTON_POSITIVE -> {
+                        val editor = prefs.edit()
+                        editor.putString(AuthModel.PREF_DISCLAIMER, "seen")
+                        editor.apply()
+                    }
+                    DialogInterface.BUTTON_NEGATIVE -> {
+                        Toast.makeText(context, "You have to read and agree.", Toast.LENGTH_LONG).show()
+                        parent.finish()
+                    }
+                }
+            }
+
+            val builder = AlertDialog.Builder(parent)
+            builder.setMessage(context.resources.getString(R.string.disclaimer))
+                    .setPositiveButton("Gotcha", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show()
+        }
+    }
+
+    /*
+    *********
+    DATA GETS
+    *********
+     */
 
     @SuppressLint("ApplySharedPref")
     fun attemptLogin(){
@@ -53,41 +96,25 @@ class AuthController(private val context: Context, val parent: Login,
 
     }
 
-    fun initETVals(){
-        server.setText(prefs.getString(AuthModel.PREF_SERVER, ""))
-        username.setText(prefs.getString(AuthModel.PREF_USERNAME, ""))
-    }
-
-    fun disclaimer(){
-        //show disclaimer
-        if (!prefs.contains(AuthModel.PREF_DISCLAIMER)) {
-            val dialogClickListener = DialogInterface.OnClickListener { _, which ->
-                when (which) {
-                    DialogInterface.BUTTON_POSITIVE -> {
-                        val editor = prefs.edit()
-                        editor.putString(AuthModel.PREF_DISCLAIMER, "seen")
-                        editor.apply()
-                    }
-                    DialogInterface.BUTTON_NEGATIVE -> {
-                        Toast.makeText(context, "You have to read and agree.", Toast.LENGTH_LONG).show()
-                        parent.finish()
-                    }
-                }
-            }
-
-            val builder = AlertDialog.Builder(parent)
-            builder.setMessage(context.resources.getString(R.string.disclaimer))
-                    .setPositiveButton("Gotcha", dialogClickListener)
-                    .setNegativeButton("No", dialogClickListener).show()
+    fun checkKey(){
+        if(prefs.contains(AuthModel.PREF_SESSION_KEY) && prefs.getString(AuthModel.PREF_SESSION_KEY, "") != ""){
+            //contains data
+            model.checkSessionKey()
+        } else {
+            parent.sessionInvalid()
         }
     }
 
+    /*
+    ************
+    DATA PROCESS
+    ************
+     */
+
     @SuppressLint("ApplySharedPref")
     fun sessionKeyResult(result: NetResult){
-        parent.setLoading(false)
-
-
         if(result.error){
+            parent.setLoading(false)
             if(result.responseCode == 401){
                 password.error = "Username or password incorrect: 401 Unauthorized"
                 password.setText("")
@@ -106,10 +133,18 @@ class AuthController(private val context: Context, val parent: Login,
                 parent.login()
             } else {
                 server.setText(context.getString(R.string.login_invalid_no_sessionkey))
+                parent.setLoading(false)
             }
         }
+    }
 
-
+    fun checkKeyResult(result:NetResult){
+        Log.d("AuthController","Session status code is " + result.responseCode)
+        if(result.error){
+            parent.sessionInvalid()
+        } else {
+            parent.login()
+        }
     }
 
 }

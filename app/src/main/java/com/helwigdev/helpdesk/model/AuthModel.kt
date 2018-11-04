@@ -36,6 +36,31 @@ class AuthModel(context: Context, private val parent: AuthController){
 
     }
 
+
+    fun checkSessionKey(){
+        val s = "/helpdesk/WebObjects/Helpdesk.woa/ra/Tickets/mine" +
+                "?page=1&limit=1" +
+                "&sessionKey=" + prefs.getString(PREF_SESSION_KEY, "")
+        val prefix = if (prefs.getBoolean(PREF_USE_SSL, true)) "https://" else "http://"
+        FuelManager.instance.basePath = prefix + prefs.getString(PREF_SERVER, "")
+        s.httpGet()
+            .header(Pair("Cookie",prefs.getString(PREF_COOKIE,"")))
+            .responseString { _, response, result ->
+                var (data, error) = result
+                if(data == null) data = ""
+
+                val cookieHeader = response.headers["Set-Cookie"]
+                val cookie = if(cookieHeader != null) cookieHeader[0] else ""
+
+                if(error == null){
+                    parent.checkKeyResult(NetResult(data,response.statusCode, false, cookie))
+                } else {
+                    parent.checkKeyResult(NetResult(error.cause.toString(),response.statusCode, true, cookie))
+                }
+            }
+
+    }
+
     companion object {
         const val PREF_SERVER: String = "server"
         const val PREF_USERNAME = "username"
