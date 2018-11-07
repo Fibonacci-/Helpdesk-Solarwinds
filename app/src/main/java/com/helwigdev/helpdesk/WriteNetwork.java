@@ -58,9 +58,10 @@ public class WriteNetwork extends AsyncTask<URL, Void, String>{
                 String newUrl = url.toString();
 
                 if (redirect) {
+
                     // get redirect url from "location" header field
                     newUrl = urlConnection.getHeaderField("Location");
-
+                    Log.d(TAG, "Redirecting: " + url.toString() + " || to: " + newUrl);
                 }
                 urlConnection.disconnect();
 

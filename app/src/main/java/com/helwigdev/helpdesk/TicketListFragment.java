@@ -65,7 +65,11 @@ public class TicketListFragment extends ListFragment implements RNInterface {
         if(preferences == null){
             preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         }
-        String sUrl = "http://" +
+        //val prefix = if (prefs.getBoolean(PREF_USE_SSL, true)) "https://" else "http://"
+
+        String prefix = preferences.getBoolean(AuthModel.PREF_USE_SSL, true) ? "https://" : "http://";
+
+        String sUrl = prefix +
                 preferences.getString(AuthModel.PREF_SERVER, "") +
                 "/helpdesk/WebObjects/Helpdesk.woa/ra/Tickets/mine" +
                 "?page=1&limit=500" +
@@ -154,7 +158,7 @@ public class TicketListFragment extends ListFragment implements RNInterface {
                 break;
             default:
                 Toast.makeText(getActivity(), "Server returned error: " + type, Toast.LENGTH_SHORT).show();
-                Crashlytics.logException(new Exception("TLF: Server returned error: Task: " + taskId + " Type: " + type));
+                Crashlytics.logException(new Exception("TLF: Server returned error: Task: " + taskId + " Type: " + type + " Message: " + message));
         }
     }
 

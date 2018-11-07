@@ -64,8 +64,10 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
     }
 
     private void initGetTickets(){
+
+        String prefix = preferences.getBoolean(AuthModel.PREF_USE_SSL, true) ? "https://" : "http://";
         //build web request
-        String sUrl = "http://" +
+        String sUrl = prefix +
                 preferences.getString(AuthModel.PREF_SERVER, "") +
                 "/helpdesk/WebObjects/Helpdesk.woa/ra/Tickets/group" +
                 "?page=1&limit=500" +
@@ -159,7 +161,7 @@ public class TicketGroupListFragment extends ListFragment implements RNInterface
                 break;
             default:
                 Toast.makeText(getActivity(), "Server returned error: " + type, Toast.LENGTH_SHORT).show();
-                Crashlytics.logException(new Exception("TGLF: Server returned error: Task: " + taskId + " Type: " + type));
+                Crashlytics.logException(new Exception("TGLF: Server returned error: Task: " + taskId + " Type: " + type + " Message: " + message));
         }
     }
 

@@ -4,17 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.inputmethod.EditorInfo
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.helwigdev.helpdesk.R
 import com.helwigdev.helpdesk.TabActivity
 import com.helwigdev.helpdesk.controller.AuthController
 import kotlinx.android.synthetic.main.a_login.*
 
 
-
 class Login : AppCompatActivity() {
 
+
     private lateinit var auth: AuthController
-    //todo ads
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +24,7 @@ class Login : AppCompatActivity() {
 
         this.title = getString(R.string.login)
 
-        //initialize controller
+        //initialize method variables
         auth = AuthController(
                 applicationContext,
                 this,
@@ -31,15 +32,19 @@ class Login : AppCompatActivity() {
                 et_username,
                 et_password,
                 cb_use_ssl)
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
         //startup functions
         auth.disclaimer()
         auth.initETVals()
-        
-        //check session key
-        et_password.hint = "Validating session..."
+        auth.initAdView(av_init_bottom)
+
+        //start session key check process
+        et_password.hint = getString(R.string.session_check)
         auth.checkKey()
 
-        et_password.setOnEditorActionListener { v, actionId, event ->
+        //start login process if enter key is pressed in password field
+        et_password.setOnEditorActionListener { _, actionId, _ ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_GO) {
                 setLoading(true)
@@ -49,7 +54,7 @@ class Login : AppCompatActivity() {
             handled
         }
 
-        //the login button
+        //start login process if login button is clicked
         b_login.setOnClickListener {
             setLoading(true)
             auth.attemptLogin()
@@ -58,6 +63,7 @@ class Login : AppCompatActivity() {
 
     }
 
+    //toggles views between loading state
     fun setLoading(loading: Boolean){
         if(loading){
             b_login.setText(R.string.loading)
@@ -70,10 +76,21 @@ class Login : AppCompatActivity() {
 
     //called after session key has been verified
     fun login(){
+        //for some reason starting intents takes a second or two these days
+        //so we disable the login views and start the transition process
         setLoading(true)
         b_login.text = getString(R.string.logging_in)
+        et_password.setOnEditorActionListener(null)
+
+        //also log dat ish
+        val params = Bundle()
+        params.putBoolean("success", true)
+        mFirebaseAnalytics.logEvent("login", params)
+
         val i = Intent(this, TabActivity::class.java)
         startActivity(i)
+
+        //quit this activity so it doesn't show up in the back stack
         finish()
     }
 

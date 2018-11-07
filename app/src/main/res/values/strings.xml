@@ -12,7 +12,7 @@
     <string name="err_fields_not_full">All fields must not be empty</string>
     <string name="init_assure">We never store your password.</string>
     <string name="tickets_title">Tickets</string>
-    <string name="session_check">Checking session...</string>
+    <string name="session_check">Validating session…</string>
     <string name="new_note">New note</string>
     <string name="no_notes">No notes</string>
     <string name="is_visible">Visible to client?</string>

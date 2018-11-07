@@ -133,7 +133,8 @@ public class TicketViewFragment extends Fragment implements RNInterface {
                                     o.put("emailClient", cbEmailClient.isChecked());
                                     o.put("emailTech", cbEmailTech.isChecked());
 
-                                    String sUrl = "http://" +
+                                    String prefix = preferences.getBoolean(AuthModel.PREF_USE_SSL, true) ? "https://" : "http://";
+                                    String sUrl = prefix +
                                             preferences.getString(AuthModel.PREF_SERVER, "") +
                                             "/helpdesk/WebObjects/Helpdesk.woa/ra/TechNotes?sessionKey=" +
                                             preferences.getString(AuthModel.PREF_SESSION_KEY, "");
@@ -191,7 +192,8 @@ public class TicketViewFragment extends Fragment implements RNInterface {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        String sUrl = "http://" +
+        String prefix = preferences.getBoolean(AuthModel.PREF_USE_SSL, true) ? "https://" : "http://";
+        String sUrl = prefix +
                 preferences.getString(AuthModel.PREF_SERVER, "") +
                 "/helpdesk/WebObjects/Helpdesk.woa/ra/Tickets/" +
                 ticketId +
@@ -397,7 +399,7 @@ public class TicketViewFragment extends Fragment implements RNInterface {
 
     @Override
     public void onPause() {
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        //getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         super.onPause();
     }
 

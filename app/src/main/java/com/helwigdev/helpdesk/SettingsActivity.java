@@ -26,7 +26,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private static final String ADS_ORDER_ID = "ad_removal_order_id";
     private static final String ADS_PURCHASE_TOKEN = "ad_removal_purchase_token";
-    protected static final String PREF_ADS_REMOVED = "pref_ads_removed";
+    public static final String PREF_ADS_REMOVED = "pref_ads_removed";
     private static final String TAG = "SettingsActivity";
 
     @Override
