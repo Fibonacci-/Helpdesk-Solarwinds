@@ -106,6 +106,13 @@ class AuthController(private val context: Context, val parent: Login,
             return
         }
 
+        if(server.text.toString().contains(" ")){
+            server.error = "Spaces are not supported in a DNS address"
+            server.requestFocus()
+            parent.setLoading(false)
+            return
+        }
+
         //make sure none of them are empty
         for(view in views){
             view.setText(view.text.trim())
