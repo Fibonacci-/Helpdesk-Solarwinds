@@ -90,16 +90,6 @@ public class SettingsFragment extends PreferenceFragment {
             }
         });
 
-        configureNotifications.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                startActivity(new Intent(getActivity(), NotificationActivity.class));
-                return true;
-            }
-        });
-        //hide notifications for now
-        functionality.removePreference(configureNotifications);
-
 
         removeAds.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override

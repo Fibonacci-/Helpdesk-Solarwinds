@@ -20,14 +20,10 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-5637328886369714~1187638383" />
 
-        <activity android:name=".TicketViewActivity" />
+        <activity android:name=".view.DrawerView" />
         <activity android:name=".AttributionActivity" />
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".NotificationActivity" />
-        <activity
-            android:name=".TabActivity"
-            android:label="@string/title_activity_tab"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".view.Login" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

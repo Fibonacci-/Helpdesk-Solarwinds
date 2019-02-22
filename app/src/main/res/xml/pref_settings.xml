@@ -10,9 +10,6 @@
             android:summary="@string/auto_refresh_detail"
             android:title="@string/auto_refresh" />
 
-        <Preference android:title="@string/notifications"
-            android:summary="@string/pref_notifications_detail"
-            android:key="key_pref_configure_notifications"/>
 
         <Preference android:title="@string/remove_ads"
             android:summary="@string/remove_ads_detail"

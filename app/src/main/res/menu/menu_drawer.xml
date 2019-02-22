@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/dm_my_tickets"
+            android:title="@string/my_tickets" />
+        <item
+            android:id="@+id/dm_group_tickets"
+            android:title="@string/group_tickets" />
+        <item
+            android:id="@+id/dm_flagged_tickets"
+            android:title="@string/flagged_tickets" />
+        <item
+            android:id="@+id/dm_recent_tickets"
+            android:title="@string/recent_tickets"/>
+        <item
+            android:id="@+id/dm_search_tickets"
+            android:title="@string/search" />
+    </group>
+</menu>

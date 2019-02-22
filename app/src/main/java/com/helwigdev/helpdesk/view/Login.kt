@@ -3,10 +3,10 @@ package com.helwigdev.helpdesk.view
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.helwigdev.helpdesk.R
-import com.helwigdev.helpdesk.TabActivity
 import com.helwigdev.helpdesk.controller.AuthController
 import kotlinx.android.synthetic.main.a_login.*
 
@@ -22,7 +22,7 @@ class Login : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.a_login)
 
-        this.title = getString(R.string.login)
+        login_toolbar.title = getString(R.string.login);
 
         //initialize method variables
         auth = AuthController(
@@ -60,6 +60,13 @@ class Login : AppCompatActivity() {
             auth.attemptLogin()
         }
 
+        b_login.setOnLongClickListener {
+            val i = Intent(this, DrawerView::class.java)
+            startActivity(i)
+            finish()
+            true
+        }
+
 
     }
 
@@ -87,7 +94,7 @@ class Login : AppCompatActivity() {
         params.putBoolean("success", true)
         mFirebaseAnalytics.logEvent("login", params)
 
-        val i = Intent(this, TabActivity::class.java)
+        val i = Intent(this, DrawerView::class.java)
         startActivity(i)
 
         //quit this activity so it doesn't show up in the back stack

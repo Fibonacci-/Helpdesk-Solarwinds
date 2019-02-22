@@ -164,4 +164,9 @@ limitations under the License.
     <string name="use_ssl">Use SSL/TLS</string>
     <string name="login_invalid_no_sessionkey">Invalid response from server: no sessionKey object</string>
     <string name="logging_in">Logging in…</string>
+    <string name="flagged_tickets">Flagged Tickets</string>
+    <string name="recent_tickets">Recent Tickets</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
