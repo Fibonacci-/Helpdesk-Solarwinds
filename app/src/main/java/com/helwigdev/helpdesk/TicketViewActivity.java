@@ -36,6 +36,7 @@ public class TicketViewActivity extends SingleFragmentActivity {
                     .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                     .addTestDevice("E498D046420E068963DD7607B804BA3D")
                     .addTestDevice("960E1155E3858B01540E73FBD53DB405")
+                    .addTestDevice("4283C4B685567508FFF2525F7AB7B819")
                     .build();
 
             mAdView.loadAd(adRequest);

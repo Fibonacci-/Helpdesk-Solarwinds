@@ -63,6 +63,8 @@ public class TicketViewFragment extends Fragment implements RNInterface {
     String ticketType = "Ticket";
     String prettyLastUpdated;
 
+    TicketSingleton ticketSingleton = TicketSingleton.getInstance();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,7 +76,10 @@ public class TicketViewFragment extends Fragment implements RNInterface {
             getActivity().finish();
         }
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        //mTicket = TicketSingleton.getInstance().getTicketById(ticketId);
+        mTicket = ticketSingleton.getTicketById(ticketId);
+        if(mTicket == null){
+            mTicket = TicketGroupSingleton.getInstance().getTicketById(ticketId);
+        }
 
         View v = inflater.inflate(R.layout.full_ticket, container, false);
 
@@ -91,6 +96,9 @@ public class TicketViewFragment extends Fragment implements RNInterface {
         llNotes = v.findViewById(R.id.ll_full_notes);
         svTicketScroll = v.findViewById(R.id.sv_ticket_scrollview);
         rlTicketRelative = v.findViewById(R.id.rl_ticket_relative);
+
+
+
 
         bNewNote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,12 +168,12 @@ public class TicketViewFragment extends Fragment implements RNInterface {
         pbNoteLoader.setVisibility(View.VISIBLE);
 
         //find and insert ticket details from cached views
-//        tvId.setText(String.valueOf(mTicket.getTicketId()));
-//        tvClient.setText("Client: " + mTicket.getDisplayClient());
-//        tvPrettyUpdated.setText(mTicket.getPrettyLastUpdated());
-//        tvUpdated.setText(mTicket.getLastUpdated().toString());
-//        tvSubject.setText(mTicket.getShortSubject());
-//        tvDetails.setText(mTicket.getShortDetail());
+        tvId.setText(String.valueOf(mTicket.getTicketId()));
+        tvClient.setText("Client: " + mTicket.getDisplayClient());
+        tvPrettyUpdated.setText(mTicket.getPrettyLastUpdated());
+        tvUpdated.setText(mTicket.getLastUpdated().toString());
+        tvSubject.setText(mTicket.getShortSubject());
+        tvDetails.setText(mTicket.getShortDetail());
 
         tvSubject.setOnClickListener(new View.OnClickListener() {
             @Override
