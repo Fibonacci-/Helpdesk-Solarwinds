@@ -13,13 +13,16 @@ import android.view.View
 import android.view.animation.TranslateAnimation
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
-import com.helwigdev.helpdesk.BlankFragment
 import com.helwigdev.helpdesk.R
 import com.helwigdev.helpdesk.SettingsActivity
+import com.helwigdev.helpdesk.view.dummy.DummyContent
 import kotlinx.android.synthetic.main.a_main_drawer.*
 
 
-class DrawerView : AppCompatActivity() {
+class DrawerView : AppCompatActivity(), TicketFragment.OnListFragmentInteractionListener {
+    override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
+        //nothing going on here
+    }
 
     private lateinit var preferences: SharedPreferences
     private var lastTranslate = 0.0f
@@ -59,8 +62,6 @@ class DrawerView : AppCompatActivity() {
 
             // update the UI based on the item selected
             handleNavSelection(menuItem)
-
-            true
         }
 
         drawer_layout.addDrawerListener(
@@ -95,11 +96,17 @@ class DrawerView : AppCompatActivity() {
         handleNavSelection(nav_view.checkedItem)
     }
 
-    private fun handleNavSelection(item: MenuItem?){
+    private fun handleNavSelection(item: MenuItem?): Boolean{
         Log.d("DrawerViewLog","Selected item " + item?.title)
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.content_frame, BlankFragment.newInstance("one","two"))
-                .commit()
+        return when(item?.itemId){
+            R.id.dm_my_tickets -> {
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, TicketFragment.newInstance(1))
+                        .commit()
+                true
+            }
+            else -> false
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
