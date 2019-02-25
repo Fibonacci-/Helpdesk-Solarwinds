@@ -4,11 +4,6 @@
     <PreferenceCategory
         android:key="pref_key_functionality"
         android:title="@string/functionality">
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="key_pref_bool_tick_auto_refresh"
-            android:summary="@string/auto_refresh_detail"
-            android:title="@string/auto_refresh" />
 
 
         <Preference android:title="@string/remove_ads"

@@ -16,6 +16,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        <activity android:name=".view.TicketView"></activity>
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-5637328886369714~1187638383" />
@@ -23,8 +25,7 @@
         <activity android:name=".view.DrawerView" />
         <activity android:name=".AttributionActivity" />
         <activity android:name=".SettingsActivity" />
-
-        <activity android:name=".view.Login" >
+        <activity android:name=".view.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -175,11 +175,13 @@ class AuthController(private val context: Context, val parent: Login,
             //handle login
             try{
             val o = JSONObject(result.result)
+            val currentTechId = o.getString("currentTechId")
             val key = o.getString("sessionKey")
             if(key != null) {
                 prefs.edit()
                         .putString(AuthModel.PREF_SESSION_KEY, key)
                         .putString(AuthModel.PREF_COOKIE, result.cookie)
+                        .putString(AuthModel.PREF_TECH_ID, currentTechId)
                         .commit()
                 parent.login()
                 }

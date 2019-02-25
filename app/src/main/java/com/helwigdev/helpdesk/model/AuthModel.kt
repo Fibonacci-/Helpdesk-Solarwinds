@@ -25,6 +25,7 @@ class AuthModel(context: Context, private val parent: AuthController){
                 "&password=" + password
 
         FuelManager.instance.basePath = prefix + prefs.getString(PREF_SERVER, "")
+        FuelManager.instance.timeoutReadInMillisecond = 30000
         s.httpGet().responseString { _, response, result ->
             var (data, error) = result
 
@@ -50,6 +51,7 @@ class AuthModel(context: Context, private val parent: AuthController){
                 "&sessionKey=" + prefs.getString(PREF_SESSION_KEY, "")
         val prefix = if (prefs.getBoolean(PREF_USE_SSL, true)) "https://" else "http://"
         FuelManager.instance.basePath = prefix + prefs.getString(PREF_SERVER, "")
+        FuelManager.instance.timeoutReadInMillisecond = 30000
         s.httpGet()
             .header(Pair("Cookie",prefs.getString(PREF_COOKIE,"")))
             .responseString { _, response, result ->
@@ -75,6 +77,7 @@ class AuthModel(context: Context, private val parent: AuthController){
         const val PREF_USE_SSL = "should_use_ssl"
         const val PREF_COOKIE = "whd_cookie"
         const val PREF_DISCLAIMER = "seen_disclaimer"
+        const val PREF_TECH_ID = "current_tech_id"
     }
 
 }

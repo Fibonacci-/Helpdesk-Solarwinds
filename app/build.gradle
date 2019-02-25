@@ -47,6 +47,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.github.kittinunf.fuel:fuel-android:1.13.0'
     implementation 'com.google.code.gson:gson:2.8.2'
+    implementation "org.jetbrains.anko:anko-commons:0.10.0"
 }
 apply plugin: 'com.google.gms.google-services'
 repositories {
