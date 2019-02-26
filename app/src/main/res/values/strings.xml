@@ -171,4 +171,5 @@ limitations under the License.
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="image_icon">Image Icon</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ut varius erat. Integer vitae ex dictum, tincidunt ante sed, facilisis orci. Aliquam sed condimentum mi. Curabitur ultricies sollicitudin augue ac efficitur. Nunc odio turpis, ullamcorper vitae nisl non, scelerisque hendrerit odio. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vestibulum nec enim quis velit tempus euismod. Suspendisse et accumsan dolor. Sed porttitor eros non massa aliquet, ut ultrices tellus semper. Ut porttitor velit felis, eget ultrices ex efficitur at. Etiam finibus velit mi, a blandit augue viverra ut. Nullam viverra tincidunt libero, quis volutpat urna sodales et.</string>
+    <string name="resolution">Resolution</string>
 </resources>
