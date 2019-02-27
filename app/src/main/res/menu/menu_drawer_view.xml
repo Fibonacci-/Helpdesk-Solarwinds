@@ -4,12 +4,14 @@
     <item
         android:id="@+id/menu_dv_refresh"
         android:icon="@drawable/ic_menu_refresh"
+        android:orderInCategory="1"
         android:visible="false"
         app:showAsAction="ifRoom"
         android:title="@string/refresh"
         />
     <item
         android:id="@+id/menu_feedback"
+        app:showAsAction="never"
         android:title="@string/send_feedback" />
     <item
         android:id="@+id/action_settings"

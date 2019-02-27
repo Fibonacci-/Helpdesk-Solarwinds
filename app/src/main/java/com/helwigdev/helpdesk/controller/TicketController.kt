@@ -3,8 +3,11 @@ package com.helwigdev.helpdesk.controller
 import android.content.SharedPreferences
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.httpGet
+import com.github.kittinunf.fuel.httpPost
 import com.google.gson.Gson
 import com.helwigdev.helpdesk.model.AuthModel
+import com.helwigdev.helpdesk.model.FullNote
+import com.helwigdev.helpdesk.model.Note
 import com.helwigdev.helpdesk.model.Ticket
 import java.net.SocketTimeoutException
 
@@ -94,6 +97,32 @@ class TicketController(private var prefs: SharedPreferences, private var ticketI
         val t: Ticket = Gson().fromJson(result, Ticket::class.java)
 
         ticketInterface.ticketLoadResult(t)
+    }
+
+    fun sendNote(noteInterface: NoteInterface, note: FullNote){
+
+        val partUrl = "/helpdesk/WebObjects/Helpdesk.woa/ra/TechNotes?sessionKey="
+        val prefix = if (prefs.getBoolean(AuthModel.PREF_USE_SSL, true)) "https://" else "http://"
+        val cookie = prefs.getString(AuthModel.PREF_COOKIE, "")
+        val s = partUrl +
+                prefs.getString(AuthModel.PREF_SESSION_KEY, "")
+        FuelManager.instance.basePath = prefix + prefs.getString(AuthModel.PREF_SERVER, "")
+        FuelManager.instance.timeoutReadInMillisecond = 30000
+        FuelManager.instance.timeoutInMillisecond = 30000
+
+        val body = Gson().toJson(note)
+
+        val response = s.httpPost()
+                .header("Cookie" to cookie)
+                .body(body)
+                .responseString()
+        val result = response.second.statusCode
+        if(result != 201){
+            val error = response.third.component2().toString()
+            noteInterface.noteSendError(error)
+            return
+        }
+        noteInterface.noteSendResult()
     }
 
 }

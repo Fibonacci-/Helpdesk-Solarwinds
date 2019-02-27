@@ -172,4 +172,14 @@ limitations under the License.
     <string name="image_icon">Image Icon</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ut varius erat. Integer vitae ex dictum, tincidunt ante sed, facilisis orci. Aliquam sed condimentum mi. Curabitur ultricies sollicitudin augue ac efficitur. Nunc odio turpis, ullamcorper vitae nisl non, scelerisque hendrerit odio. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vestibulum nec enim quis velit tempus euismod. Suspendisse et accumsan dolor. Sed porttitor eros non massa aliquet, ut ultrices tellus semper. Ut porttitor velit felis, eget ultrices ex efficitur at. Etiam finibus velit mi, a blandit augue viverra ut. Nullam viverra tincidunt libero, quis volutpat urna sodales et.</string>
     <string name="resolution">Resolution</string>
+    <string name="bcc">bcc@organization.com</string>
+    <string name="email_bcc">Email bcc</string>
+    <string name="email_cc">Email cc</string>
+    <string name="email_client">Email client</string>
+    <string name="email_grouplevel">Email group level</string>
+    <string name="email_groupmanager">Email group manager</string>
+    <string name="email_tech">Email tech</string>
+    <string name="email_tech_grouplevel">Email tech group level</string>
+    <string name="is_solution">Is solution</string>
+    <string name="hide_note">Hide note</string>
 </resources>

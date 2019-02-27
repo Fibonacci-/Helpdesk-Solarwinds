@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ticket_view_parent"
+        android:animateLayoutChanges="true"
         tools:context=".view.TicketView">
 
         <android.support.v7.widget.Toolbar
@@ -51,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:text="12345"
+            android:text="@string/loading"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:textSize="58sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,6 +65,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
+            android:visibility="invisible"
             android:text="Mr. Lemons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_ticket_view_id" />
@@ -76,7 +78,8 @@
             android:layout_marginLeft="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="Updated Feb 12, 2019 at 10:04 am"
+            android:visibility="invisible"
+            android:text="Updated..."
             android:gravity="end"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -106,6 +109,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
+            android:visibility="invisible"
             android:text="Subject Line Text Text"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textSize="20sp"
@@ -130,6 +134,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
+            android:visibility="invisible"
             android:background="@color/colorPrimaryDark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -142,6 +147,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
+            android:visibility="invisible"
             android:gravity="end"
             android:text="Due\nFeb 13 at 4:30 pm"
             app:layout_constraintEnd_toEndOf="parent"
@@ -153,6 +159,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
+            android:visibility="invisible"
             android:text="Assigned to Mr.Technician"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_ticket_view_last_updated" />
@@ -166,6 +173,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
+            android:visibility="invisible"
             android:text="@string/lorem_ipsum"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -181,7 +189,7 @@
             ads:adUnitId="ca-app-pub-5637328886369714/2105968388"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_ticket_view_details"></com.google.android.gms.ads.AdView>
+            app:layout_constraintTop_toBottomOf="@id/tv_ticket_view_details" />
 
         <LinearLayout
             android:id="@+id/ll_note_content"

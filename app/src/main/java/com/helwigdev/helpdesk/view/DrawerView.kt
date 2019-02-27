@@ -36,7 +36,6 @@ class DrawerView : AppCompatActivity(), TicketFragment.OnListFragmentInteraction
     private var menuRefresh: MenuItem? = null
 
     override fun onListFragmentInteraction(ticket: Ticket?) {
-        Toast.makeText(this, "Interaction with ticket " + ticket?.shortSubject, Toast.LENGTH_LONG).show()
         val i = Intent(this, TicketView::class.java)
         i.putExtra(TicketView.ARG_TICKET_ID, ticket?.id)
         startActivity(i)
@@ -69,18 +68,7 @@ class DrawerView : AppCompatActivity(), TicketFragment.OnListFragmentInteraction
         }
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        MobileAds.initialize(applicationContext, "ca-app-pub-5637328886369714~1187638383")
-        //if ads have not been removed
-        if (!preferences.getBoolean(SettingsActivity.PREF_ADS_REMOVED, false)) {
-            val adRequest = AdRequest.Builder()
-                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                    .addTestDevice("4283C4B685567508FFF2525F7AB7B819")
-                    .build()
 
-            av_tickets_bottom.loadAd(adRequest)
-        } else {
-            av_tickets_bottom.visibility = View.GONE
-        }
 
         nav_view.setNavigationItemSelectedListener { menuItem ->
             // set item as selected to persist highlight
@@ -122,6 +110,22 @@ class DrawerView : AppCompatActivity(), TicketFragment.OnListFragmentInteraction
         updateTechInfo()
         nav_view.setCheckedItem(R.id.dm_my_tickets)
         handleNavSelection(nav_view.checkedItem)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        MobileAds.initialize(applicationContext, "ca-app-pub-5637328886369714~1187638383")
+        //if ads have not been removed
+        if (!preferences.getBoolean(SettingsActivity.PREF_ADS_REMOVED, false)) {
+            val adRequest = AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                    .addTestDevice("4283C4B685567508FFF2525F7AB7B819")
+                    .build()
+
+            av_tickets_bottom.loadAd(adRequest)
+        } else {
+            av_tickets_bottom.visibility = View.GONE
+        }
     }
 
 

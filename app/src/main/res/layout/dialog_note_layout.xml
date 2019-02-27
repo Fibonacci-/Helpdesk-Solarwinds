@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <EditText
+            android:id="@+id/et_note_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:hint="@string/new_note"
+            android:inputType="textMultiLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/spin_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/et_minutes_worked"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_note_text" />
+
+        <EditText
+            android:id="@+id/et_minutes_worked"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:hint="@string/min_worked"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_note_text" />
+
+        <EditText
+            android:id="@+id/et_bcc_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:hint="@string/bcc"
+            android:importantForAutofill="no"
+            android:inputType="textEmailAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_minutes_worked" />
+
+        <GridLayout
+            android:id="@+id/gl_note_cb_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:columnCount="2"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_bcc_list">
+
+            <View
+                android:id="@+id/v_cb_line1"
+                android:layout_width="200dp"
+                android:layout_height="3dp"
+                android:layout_columnSpan="2"
+                android:layout_gravity="center"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:background="@color/colorPrimaryDark" />
+
+            <CheckBox
+                android:id="@+id/cb_email_tech_grouplevel"
+                android:text="@string/email_tech_grouplevel" />
+
+            <CheckBox
+                android:id="@+id/cb_email_bcc"
+                android:text="@string/email_bcc" />
+
+            <CheckBox
+                android:id="@+id/cb_email_groupmanager"
+                android:text="@string/email_groupmanager" />
+
+            <CheckBox
+                android:id="@+id/cb_email_cc"
+                android:text="@string/email_cc" />
+
+            <CheckBox
+                android:id="@+id/cb_email_client"
+                android:text="@string/email_client" />
+
+            <CheckBox
+                android:id="@+id/cb_email_tech"
+                android:text="@string/email_tech" />
+
+            <View
+                android:id="@+id/v_cb_line2"
+                android:layout_width="200dp"
+                android:layout_height="3dp"
+                android:layout_columnSpan="2"
+                android:layout_gravity="center"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:background="@color/colorPrimaryDark" />
+
+            <CheckBox
+                android:id="@+id/cb_is_solution"
+                android:text="@string/is_solution" />
+
+            <CheckBox
+                android:id="@+id/cb_hide_note"
+                android:text="@string/hide_note" />
+
+        </GridLayout>
+
+        <Button
+            android:id="@+id/b_note_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@android:string/cancel"
+            style='@style/Widget.AppCompat.Button.Borderless'
+            app:layout_constraintEnd_toStartOf="@+id/b_note_ok"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gl_note_cb_parent" />
+
+        <Button
+            android:id="@+id/b_note_ok"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="@android:string/ok"
+            style='@style/Widget.AppCompat.Button.Borderless'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/b_note_cancel"
+            app:layout_constraintTop_toBottomOf="@+id/gl_note_cb_parent" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</ScrollView>
