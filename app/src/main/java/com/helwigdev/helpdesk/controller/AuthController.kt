@@ -98,7 +98,8 @@ class AuthController(private val context: Context, val parent: Login,
         //tell the user if they've entered the server incorrectly
         if(server.text.toString().contains("http://", true) ||
                 server.text.toString().contains("https://", true) ||
-                server.text.toString().contains("/", true)){
+                server.text.toString().contains("/", true) ||
+                server.text.toString().contains("\\", true)){
             server.error = "Only type the FQDN of the server: don't include http or anything after the TLD"
             server.requestFocus()
             parent.setLoading(false)
@@ -161,6 +162,10 @@ class AuthController(private val context: Context, val parent: Login,
                 }
                 result.responseCode == 404 -> {
                     server.error = "Can't find a compatible API: 404 Not Found"
+                    server.requestFocus()
+                }
+                result.responseCode == -5 -> {
+                    server.error = result.result
                     server.requestFocus()
                 }
                 else -> {

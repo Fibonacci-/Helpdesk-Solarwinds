@@ -3,9 +3,12 @@ package com.helwigdev.helpdesk.model
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import com.crashlytics.android.Crashlytics
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.httpGet
 import com.helwigdev.helpdesk.controller.AuthController
+import java.net.URISyntaxException
+import java.net.UnknownHostException
 
 class AuthModel(context: Context, private val parent: AuthController){
     private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -26,20 +29,34 @@ class AuthModel(context: Context, private val parent: AuthController){
 
         FuelManager.instance.basePath = prefix + prefs.getString(PREF_SERVER, "")
         FuelManager.instance.timeoutReadInMillisecond = 30000
-        s.httpGet().responseString { _, response, result ->
-            var (data, error) = result
+        try {
+            s.httpGet().responseString { _, response, result ->
+                var (data, error) = result
 
-            val cookieHeader = response.headers["Set-Cookie"]
-            val cookie = if(cookieHeader != null) cookieHeader[0] else ""
+                val cookieHeader = response.headers["Set-Cookie"]
+                val cookie = if (cookieHeader != null) cookieHeader[0] else ""
 
-            if(data == null) data = ""
+                if (data == null) data = ""
 
-            if(error == null){
-                parent.sessionKeyResult(NetResult(data,response.statusCode, false, cookie))
-            } else {
-                parent.sessionKeyResult(NetResult(error.cause.toString(),response.statusCode, true, cookie))
+                if (error == null) {
+                    parent.sessionKeyResult(NetResult(data, response.statusCode, false, cookie))
+                } else {
+                    if(error.exception is UnknownHostException){
+                        parent.sessionKeyResult(NetResult("Invalid host: no special characters allowed", response.statusCode, true, cookie))
+                    } else {
+                        parent.sessionKeyResult(NetResult(error.cause.toString(), response.statusCode, true, cookie))
+                    }
+                }
+
             }
-
+        } catch(e: URISyntaxException){
+            e.printStackTrace()
+            parent.sessionKeyResult(NetResult("URL is malformed - include only the url, no special characters", -5, true, cookie = ""))
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+            Crashlytics.logException(e)
+            parent.sessionKeyResult(NetResult("Error connecting to server - is the URL correct?", -5, true, cookie = ""))
         }
 
     }

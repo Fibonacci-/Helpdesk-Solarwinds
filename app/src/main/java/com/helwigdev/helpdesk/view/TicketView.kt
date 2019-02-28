@@ -90,27 +90,38 @@ class TicketView : AppCompatActivity(), TicketInterface, NoteInterface {
         tv_ticket_view_id.visibility = View.VISIBLE
         tv_ticket_view_id.text = ticket.id.toString()
 
-        tv_ticket_view_client_fullname.visibility = View.VISIBLE
-        tv_ticket_view_client_fullname.text = ticket.displayClient
+        if(ticket.displayClient != null) {
+            tv_ticket_view_client_fullname.visibility = View.VISIBLE
+            tv_ticket_view_client_fullname.text = ticket.displayClient
+        }
 
         var formatter = SimpleDateFormat("MMM dd yyyy 'at' hh:mm aaa")
-        tv_ticket_view_last_updated.visibility = View.VISIBLE
-        tv_ticket_view_last_updated.text = "Updated ${formatter.format(ticket.lastUpdated)}"
+        if(ticket.lastUpdated != null) {
+            tv_ticket_view_last_updated.visibility = View.VISIBLE
+            tv_ticket_view_last_updated.text = "Updated ${formatter.format(ticket.lastUpdated)}"
+        }
 
-        tv_ticket_view_assigned_tech.visibility = View.VISIBLE
-        tv_ticket_view_assigned_tech.text = "Assigned to ${ticket.clientTech?.displayName}"
+        if(ticket.clientTech?.displayName != null) {
+            tv_ticket_view_assigned_tech.visibility = View.VISIBLE
+            tv_ticket_view_assigned_tech.text = "Assigned to ${ticket.clientTech?.displayName}"
+        }
 
-        tv_ticket_view_subject.visibility = View.VISIBLE
-        tv_ticket_view_subject.text = ticket.subject
+        if(ticket.subject != null) {
+            tv_ticket_view_subject.visibility = View.VISIBLE
+            tv_ticket_view_subject.text = ticket.subject
+        }
 
         formatter = SimpleDateFormat("MMM dd 'at' hh:mm aaa")
-        tv_ticket_view_due_date.visibility = View.VISIBLE
-        tv_ticket_view_due_date.text = "Due\n${formatter.format(ticket.displayDueDate)}"
-
+        if(ticket.displayDueDate != null) {
+            tv_ticket_view_due_date.visibility = View.VISIBLE
+            tv_ticket_view_due_date.text = "Due\n${formatter.format(ticket.displayDueDate)}"
+        }
         v_ticket_view_line2.visibility = View.VISIBLE
 
-        tv_ticket_view_details.visibility = View.VISIBLE
-        tv_ticket_view_details.text = Html.fromHtml(ticket.detail)
+        if(ticket.detail != null) {
+            tv_ticket_view_details.visibility = View.VISIBLE
+            tv_ticket_view_details.text = Html.fromHtml(ticket.detail)
+        }
 
         if(ticket.notes != null) {
             ll_note_content.removeAllViews()

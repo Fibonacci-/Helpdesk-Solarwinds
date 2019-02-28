@@ -126,6 +126,7 @@ class DrawerView : AppCompatActivity(), TicketFragment.OnListFragmentInteraction
         } else {
             av_tickets_bottom.visibility = View.GONE
         }
+        updateTechInfo()
     }
 
 
@@ -228,8 +229,14 @@ class DrawerView : AppCompatActivity(), TicketFragment.OnListFragmentInteraction
                 val o = JSONObject(result)
                 val techName = o.getString("displayName")
                 runOnUiThread{
-                    tv_header_user.text = techName
-                    tv_header_user.visibility = View.VISIBLE
+                    try {
+                        if(tv_header_user != null) {
+                            tv_header_user.text = techName
+                            tv_header_user.visibility = View.VISIBLE
+                        }
+                    } catch (e: Exception){
+                        e.printStackTrace()
+                    }
                 }
             } catch (e: JSONException){
                 e.printStackTrace()
