@@ -15,6 +15,7 @@
             android:title="@string/recent_tickets"/>
         <item
             android:id="@+id/dm_search_tickets"
+            android:visible="false"
             android:title="@string/search" />
     </group>
 </menu>

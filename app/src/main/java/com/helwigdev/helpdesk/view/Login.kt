@@ -60,13 +60,6 @@ class Login : AppCompatActivity() {
             auth.attemptLogin()
         }
 
-        b_login.setOnLongClickListener {
-            val i = Intent(this, DrawerView::class.java)
-            startActivity(i)
-            finish()
-            true
-        }
-
 
     }
 

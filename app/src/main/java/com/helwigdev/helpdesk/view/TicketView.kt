@@ -197,6 +197,11 @@ class TicketView : AppCompatActivity(), TicketInterface, NoteInterface {
                 dialog.b_note_ok.setOnClickListener {
                     val selectedStatus = dialog.spin_status.selectedItem as StatusType
                     var bccList: String? = dialog.et_bcc_list.text.toString()
+                    var minutesWorked = "0"
+
+                    if(dialog.et_minutes_worked.text.toString() != ""){
+                        minutesWorked = dialog.et_minutes_worked.text.toString()
+                    }
                     if(dialog.et_bcc_list.text.toString() == ""){
                         bccList = null
                     }
@@ -213,7 +218,7 @@ class TicketView : AppCompatActivity(), TicketInterface, NoteInterface {
                             JobTicket(ticketId),
                             dialog.et_note_text.text.toString(),
                             selectedStatus.id,
-                            dialog.et_minutes_worked.text.toString()
+                            minutesWorked
                     )
                     Log.d("TicketView","Submitting note $note")
                     pb_ticket_view.visibility = View.VISIBLE

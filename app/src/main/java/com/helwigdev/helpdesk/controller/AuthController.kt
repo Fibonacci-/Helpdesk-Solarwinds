@@ -166,7 +166,6 @@ class AuthController(private val context: Context, val parent: Login,
                 else -> {
                     val t = Throwable(result.result)
                     Log.e("AuthController","Unhandled net error",t)
-                    Crashlytics.logException(t)
                     server.error = result.result.removePrefix("java.net.UnknownHostException: ")
                     server.requestFocus()
                 }
@@ -206,7 +205,6 @@ class AuthController(private val context: Context, val parent: Login,
                 val t = Throwable("AuthController received unexpected response from model: code: " +
                         result.responseCode + " | data: " + result.result + " | error: " + result.error.toString())
                 Log.e("AuthController","Unexpected response from model",t)
-                Crashlytics.logException(t)
             }
             parent.sessionInvalid()
         } else {
